@@ -3,6 +3,7 @@ package enzocesarano.entities;
 import enzocesarano.entities.ENUM.TipoPuntoDiEmissione;
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -11,14 +12,26 @@ public class PuntoDiEmissione {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id_punto_emissione;
+
     private String nome_punto;
+    private boolean attivo;
+
     @Enumerated(EnumType.STRING)
     private TipoPuntoDiEmissione tipo_puntoDiEmissione;
 
-    public PuntoDiEmissione(UUID id_punto_emissione, String nome_punto, TipoPuntoDiEmissione tipo_puntoDiEmissione) {
-        this.id_punto_emissione = id_punto_emissione;
+    @OneToMany(mappedBy = "puntoDiEmissione", cascade = CascadeType.ALL)
+    private List<Biglietto> bigliettiEmessi;
+
+    @OneToMany(mappedBy = "puntoDiEmissione", cascade = CascadeType.ALL)
+    private List<Abbonamento> abbonamentiEmessi;
+
+    public PuntoDiEmissione(String nome_punto, boolean attivo, TipoPuntoDiEmissione tipo_puntoDiEmissione,
+                            List<Biglietto> bigliettiEmessi, List<Abbonamento> abbonamentiEmessi) {
         this.nome_punto = nome_punto;
+        this.attivo = attivo;
         this.tipo_puntoDiEmissione = tipo_puntoDiEmissione;
+        this.bigliettiEmessi = bigliettiEmessi;
+        this.abbonamentiEmessi = abbonamentiEmessi;
     }
 
     public PuntoDiEmissione() {
@@ -28,6 +41,9 @@ public class PuntoDiEmissione {
         return id_punto_emissione;
     }
 
+    public void setId_punto_emissione(UUID id_punto_emissione) {
+        this.id_punto_emissione = id_punto_emissione;
+    }
 
     public String getNome_punto() {
         return nome_punto;
@@ -37,11 +53,35 @@ public class PuntoDiEmissione {
         this.nome_punto = nome_punto;
     }
 
+    public boolean isAttivo() {
+        return attivo;
+    }
+
+    public void setAttivo(boolean attivo) {
+        this.attivo = attivo;
+    }
+
     public TipoPuntoDiEmissione getTipo_puntoDiEmissione() {
         return tipo_puntoDiEmissione;
     }
 
     public void setTipo_puntoDiEmissione(TipoPuntoDiEmissione tipo_puntoDiEmissione) {
         this.tipo_puntoDiEmissione = tipo_puntoDiEmissione;
+    }
+
+    public List<Biglietto> getBigliettiEmessi() {
+        return bigliettiEmessi;
+    }
+
+    public void setBigliettiEmessi(List<Biglietto> bigliettiEmessi) {
+        this.bigliettiEmessi = bigliettiEmessi;
+    }
+
+    public List<Abbonamento> getAbbonamentiEmessi() {
+        return abbonamentiEmessi;
+    }
+
+    public void setAbbonamentiEmessi(List<Abbonamento> abbonamentiEmessi) {
+        this.abbonamentiEmessi = abbonamentiEmessi;
     }
 }

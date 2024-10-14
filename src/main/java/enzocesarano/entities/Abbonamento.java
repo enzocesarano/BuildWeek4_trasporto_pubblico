@@ -14,25 +14,43 @@ public class Abbonamento {
     private boolean stato;
     private LocalDate data_inizio;
     private LocalDate data_fine;
-    private Tessera id_tessera;
-    private Emissione id_emissione;
 
-    public Abbonamento(UUID id_abbonamento, boolean stato, LocalDate data_inizio, LocalDate data_fine, Tessera id_tessera, Emissione id_emissione) {
-        this.id_abbonamento = id_abbonamento;
+    @ManyToOne
+    @JoinColumn(name = "id_utenti")
+    private Utenti utenti;
+
+    @ManyToOne
+    @JoinColumn(name = "id_punto_emissione")
+    private PuntoDiEmissione puntoDiEmissione;
+
+    @ManyToOne
+    @JoinColumn(name = "id_tessera")
+    private Tessera tessera;
+
+    public Abbonamento(boolean stato, LocalDate data_inizio, LocalDate data_fine, Utenti utenti, PuntoDiEmissione puntoDiEmissione, Tessera tessera) {
         this.stato = stato;
         this.data_inizio = data_inizio;
         this.data_fine = data_fine;
-        this.id_tessera = id_tessera;
-        this.id_emissione = id_emissione;
+        this.utenti = utenti;
+        this.puntoDiEmissione = puntoDiEmissione;
+        this.tessera = tessera;
     }
 
     public Abbonamento() {
+    }
+
+    // validità
+    public boolean isAbbValido() {
+        return data_fine.isAfter(LocalDate.now());
     }
 
     public UUID getId_abbonamento() {
         return id_abbonamento;
     }
 
+    public void setId_abbonamento(UUID id_abbonamento) {
+        this.id_abbonamento = id_abbonamento;
+    }
 
     public boolean isStato() {
         return stato;
@@ -58,19 +76,27 @@ public class Abbonamento {
         this.data_fine = data_fine;
     }
 
-    public Tessera getId_tessera() {
-        return id_tessera;
+    public Utenti getUtenti() {
+        return utenti;
     }
 
-    public void setId_tessera(Tessera id_tessera) {
-        this.id_tessera = id_tessera;
+    public void setUtenti(Utenti utenti) {
+        this.utenti = utenti;
     }
 
-    public Emissione getId_emissione() {
-        return id_emissione;
+    public PuntoDiEmissione getPuntoDiEmissione() {
+        return puntoDiEmissione;
     }
 
-    public void setId_emissione(Emissione id_emissione) {
-        this.id_emissione = id_emissione;
+    public void setPuntoDiEmissione(PuntoDiEmissione puntoDiEmissione) {
+        this.puntoDiEmissione = puntoDiEmissione;
+    }
+
+    public Tessera getTessera() {
+        return tessera;
+    }
+
+    public void setTessera(Tessera tessera) {
+        this.tessera = tessera;
     }
 }

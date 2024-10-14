@@ -2,6 +2,7 @@ package enzocesarano.entities;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.UUID;
 
@@ -11,17 +12,22 @@ public class Percorrenza {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id_percorrenza;
-    private int nr_percorrenze;
+
+    private LocalDate data;
     private LocalTime tempoEffettivo;
     @ManyToOne
     @JoinColumn(name = "id_tratta")
-    private Tratta id_tratta;
+    private Tratta tratta;
 
-    public Percorrenza(UUID id_percorrenza, int nr_percorrenze, LocalTime tempoEffettivo, Tratta id_tratta) {
-        this.id_percorrenza = id_percorrenza;
-        this.nr_percorrenze = nr_percorrenze;
+    @ManyToOne
+    @JoinColumn(name = "id_mezzo")
+    private Mezzo mezzo;
+
+    public Percorrenza(LocalDate data, LocalTime tempoEffettivo, Tratta tratta, Mezzo mezzo) {
+        this.data = data;
         this.tempoEffettivo = tempoEffettivo;
-        this.id_tratta = id_tratta;
+        this.tratta = tratta;
+        this.mezzo = mezzo;
     }
 
     public Percorrenza() {
@@ -31,12 +37,16 @@ public class Percorrenza {
         return id_percorrenza;
     }
 
-    public int getNrPercorrenze() {
-        return nr_percorrenze;
+    public void setId_percorrenza(UUID id_percorrenza) {
+        this.id_percorrenza = id_percorrenza;
     }
 
-    public void setNrPercorrenze(int nr_percorrenze) {
-        this.nr_percorrenze = nr_percorrenze;
+    public LocalDate getData() {
+        return data;
+    }
+
+    public void setData(LocalDate data) {
+        this.data = data;
     }
 
     public LocalTime getTempoEffettivo() {
@@ -47,11 +57,19 @@ public class Percorrenza {
         this.tempoEffettivo = tempoEffettivo;
     }
 
-    public Tratta getId_tratta() {
-        return id_tratta;
+    public Tratta getTratta() {
+        return tratta;
     }
 
-    public void setId_tratta(Tratta id_tratta) {
-        this.id_tratta = id_tratta;
+    public void setTratta(Tratta tratta) {
+        this.tratta = tratta;
+    }
+
+    public Mezzo getMezzo() {
+        return mezzo;
+    }
+
+    public void setMezzo(Mezzo mezzo) {
+        this.mezzo = mezzo;
     }
 }

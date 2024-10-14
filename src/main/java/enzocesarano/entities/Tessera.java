@@ -3,6 +3,7 @@ package enzocesarano.entities;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -14,29 +15,35 @@ public class Tessera {
     private LocalDate data_aquisto;
     private LocalDate data_scadenza;
 
-    private Utenti id_utente;
-    @OneToMany
-    @JoinColumn(name = "id_abbonamento")
-    private Abbonamento id_abbonamento;
+    @OneToOne
+    @JoinColumn(name = "id_utente")
+    private Utenti utenti;
 
-    private Emissione id_emissione;
+    @OneToMany(mappedBy = "tessera", cascade = CascadeType.ALL)
+    private List<Abbonamento> abbonamenti;
 
-    public Tessera(UUID id_tessera, LocalDate data_aquisto, LocalDate data_scadenza, Utenti id_utente, Abbonamento id_abbonamento, Emissione id_emissione) {
-        this.id_tessera = id_tessera;
+    public Tessera(LocalDate data_aquisto, LocalDate data_scadenza, Utenti utenti, List<Abbonamento> abbonamenti) {
         this.data_aquisto = data_aquisto;
         this.data_scadenza = data_scadenza;
-        this.id_utente = id_utente;
-        this.id_abbonamento = id_abbonamento;
-        this.id_emissione = id_emissione;
+        this.utenti = utenti;
+        this.abbonamenti = abbonamenti;
     }
 
     public Tessera() {
+    }
+
+    // rinnovo tessera
+    public boolean isValida() {
+        return data_scadenza.isAfter(LocalDate.now());
     }
 
     public UUID getId_tessera() {
         return id_tessera;
     }
 
+    public void setId_tessera(UUID id_tessera) {
+        this.id_tessera = id_tessera;
+    }
 
     public LocalDate getData_aquisto() {
         return data_aquisto;
@@ -54,27 +61,19 @@ public class Tessera {
         this.data_scadenza = data_scadenza;
     }
 
-    public Utenti getId_utente() {
-        return id_utente;
+    public Utenti getUtenti() {
+        return utenti;
     }
 
-    public void setId_utente(Utenti id_utente) {
-        this.id_utente = id_utente;
+    public void setUtenti(Utenti utenti) {
+        this.utenti = utenti;
     }
 
-    public Abbonamento getId_abbonamento() {
-        return id_abbonamento;
+    public List<Abbonamento> getAbbonamenti() {
+        return abbonamenti;
     }
 
-    public void setId_abbonamento(Abbonamento id_abbonamento) {
-        this.id_abbonamento = id_abbonamento;
-    }
-
-    public Emissione getId_emissione() {
-        return id_emissione;
-    }
-
-    public void setId_emissione(Emissione id_emissione) {
-        this.id_emissione = id_emissione;
+    public void setAbbonamenti(List<Abbonamento> abbonamenti) {
+        this.abbonamenti = abbonamenti;
     }
 }

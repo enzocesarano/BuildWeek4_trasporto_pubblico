@@ -4,6 +4,7 @@ import enzocesarano.entities.ENUM.TipoUtente;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -12,41 +13,38 @@ public class Utenti {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id_utente;
-
     private String nome;
     private String cognome;
     private LocalDate data_di_nascita;
     @Enumerated(EnumType.STRING)
     private TipoUtente tipoUtente;
-    @OneToOne
-    private Tessera id_tessera;
+    @OneToOne(mappedBy = "utenti", cascade = CascadeType.ALL)
+    private Tessera tessera;
+
+    @OneToMany(mappedBy = "utenti", cascade = CascadeType.ALL)
+    private List<Biglietto> biglietti;
+
+    @OneToMany(mappedBy = "utenti", cascade = CascadeType.ALL)
+    private List<Abbonamento> abbonamenti;
 
     public Utenti() {
     }
 
-    public Utenti(UUID id_utente, String nome, String cognome, LocalDate data_di_nascita, TipoUtente tipoUtente, Tessera id_tessera) {
-        this.id_utente = id_utente;
+    public Utenti(String nome, String cognome, LocalDate data_di_nascita, TipoUtente tipoUtente
+    ) {
         this.nome = nome;
         this.cognome = cognome;
         this.data_di_nascita = data_di_nascita;
         this.tipoUtente = tipoUtente;
-        this.id_tessera = id_tessera;
+
     }
 
-    public Tessera getId_tessera() {
-        return id_tessera;
+    public UUID getId_utente() {
+        return id_utente;
     }
 
-    public void setId_tessera(Tessera id_tessera) {
-        this.id_tessera = id_tessera;
-    }
-
-    public TipoUtente getTipoUtente() {
-        return tipoUtente;
-    }
-
-    public void setTipoUtente(TipoUtente tipoUtente) {
-        this.tipoUtente = tipoUtente;
+    public void setId_utente(UUID id_utente) {
+        this.id_utente = id_utente;
     }
 
     public String getNome() {
@@ -73,18 +71,46 @@ public class Utenti {
         this.data_di_nascita = data_di_nascita;
     }
 
-    public UUID getNumero_tessera() {
-        return id_utente;
+    public TipoUtente getTipoUtente() {
+        return tipoUtente;
     }
 
+    public void setTipoUtente(TipoUtente tipoUtente) {
+        this.tipoUtente = tipoUtente;
+    }
+
+    public Tessera getTessera() {
+        return tessera;
+    }
+
+    public void setTessera(Tessera tessera) {
+        this.tessera = tessera;
+    }
+
+    public List<Biglietto> getBiglietti() {
+        return biglietti;
+    }
+
+    public void setBiglietti(List<Biglietto> biglietti) {
+        this.biglietti = biglietti;
+    }
+
+    public List<Abbonamento> getAbbonamenti() {
+        return abbonamenti;
+    }
+
+    public void setAbbonamenti(List<Abbonamento> abbonamenti) {
+        this.abbonamenti = abbonamenti;
+    }
 
     @Override
     public String toString() {
         return "Utenti{" +
+                "id_utente=" + id_utente +
                 ", nome='" + nome + '\'' +
                 ", cognome='" + cognome + '\'' +
                 ", data_di_nascita=" + data_di_nascita +
-                ", numero_tessera=" + id_utente +
+                ", tipoUtente=" + tipoUtente +
                 '}';
     }
 }

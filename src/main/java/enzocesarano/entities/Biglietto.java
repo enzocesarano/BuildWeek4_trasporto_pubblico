@@ -12,20 +12,20 @@ public class Biglietto {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id_biglietto;
     private LocalDate data_emissione;
-    @ManyToOne
-    @JoinColumn(name = "id_utente")
-    private Utenti id_utente;
-    @ManyToOne
-    @JoinColumn(name = "id_mezzo")
-    private Mezzo id_mezzo;
     private boolean convalidato;
+    @ManyToOne
+    @JoinColumn(name = "id_utenti")
+    private Utenti utenti;
+    @ManyToOne
+    @JoinColumn(name = "id_punto_emissione")
+    private PuntoDiEmissione puntoDiEmissione;
 
-    public Biglietto(UUID id_biglietto, LocalDate data_emissione, Utenti id_utente, Mezzo id_mezzo, boolean convalidato) {
-        this.id_biglietto = id_biglietto;
+
+    public Biglietto(LocalDate data_emissione, boolean convalidato, Utenti utenti, PuntoDiEmissione puntoDiEmissione) {
         this.data_emissione = data_emissione;
-        this.id_utente = id_utente;
-        this.id_mezzo = id_mezzo;
         this.convalidato = convalidato;
+        this.utenti = utenti;
+        this.puntoDiEmissione = puntoDiEmissione;
     }
 
     public Biglietto() {
@@ -35,6 +35,9 @@ public class Biglietto {
         return id_biglietto;
     }
 
+    public void setId_biglietto(UUID id_biglietto) {
+        this.id_biglietto = id_biglietto;
+    }
 
     public LocalDate getData_emissione() {
         return data_emissione;
@@ -44,20 +47,20 @@ public class Biglietto {
         this.data_emissione = data_emissione;
     }
 
-    public Utenti getId_utente() {
-        return id_utente;
+    public Utenti getUtenti() {
+        return utenti;
     }
 
-    public void setId_utente(Utenti id_utente) {
-        this.id_utente = id_utente;
+    public void setUtenti(Utenti utenti) {
+        this.utenti = utenti;
     }
 
-    public Mezzo getId_mezzo() {
-        return id_mezzo;
+    public PuntoDiEmissione getPuntoDiEmissione() {
+        return puntoDiEmissione;
     }
 
-    public void setId_mezzo(Mezzo id_mezzo) {
-        this.id_mezzo = id_mezzo;
+    public void setPuntoDiEmissione(PuntoDiEmissione puntoDiEmissione) {
+        this.puntoDiEmissione = puntoDiEmissione;
     }
 
     public boolean isConvalidato() {

@@ -4,7 +4,7 @@ import enzocesarano.entities.ENUM.StatoMezzo;
 import enzocesarano.entities.ENUM.TipoMezzo;
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -13,28 +13,39 @@ public class Mezzo {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id_mezzo;
+
     @Enumerated(EnumType.STRING)
     private TipoMezzo tipo_mezzo;
+
     private int capienza;
+
     @Enumerated(EnumType.STRING)
     private StatoMezzo statoMezzo;
-    private LocalDate periodo;
 
-    public Mezzo(UUID id_mezzo, TipoMezzo tipo_mezzo, int capienza, StatoMezzo statoMezzo, LocalDate periodo) {
-        this.id_mezzo = id_mezzo;
+    @OneToMany(mappedBy = "mezzo", cascade = CascadeType.ALL)
+    private List<ValidazioneBiglietto> bigliettiValidi;
+
+    @OneToMany(mappedBy = "mezzo", cascade = CascadeType.ALL)
+    private List<Percorrenza> percorrenze;
+
+    public Mezzo() {
+    }
+
+    public Mezzo(TipoMezzo tipo_mezzo, int capienza, StatoMezzo statoMezzo, List<ValidazioneBiglietto> bigliettiValidi, List<Percorrenza> percorrenze) {
         this.tipo_mezzo = tipo_mezzo;
         this.capienza = capienza;
         this.statoMezzo = statoMezzo;
-        this.periodo = periodo;
-    }
-
-    public Mezzo() {
+        this.bigliettiValidi = bigliettiValidi;
+        this.percorrenze = percorrenze;
     }
 
     public UUID getId_mezzo() {
         return id_mezzo;
     }
 
+    public void setId_mezzo(UUID id_mezzo) {
+        this.id_mezzo = id_mezzo;
+    }
 
     public TipoMezzo getTipo_mezzo() {
         return tipo_mezzo;
@@ -60,11 +71,19 @@ public class Mezzo {
         this.statoMezzo = statoMezzo;
     }
 
-    public LocalDate getPeriodo() {
-        return periodo;
+    public List<ValidazioneBiglietto> getBigliettiValidi() {
+        return bigliettiValidi;
     }
 
-    public void setPeriodo(LocalDate periodo) {
-        this.periodo = periodo;
+    public void setBigliettiValidi(List<ValidazioneBiglietto> bigliettiValidi) {
+        this.bigliettiValidi = bigliettiValidi;
+    }
+
+    public List<Percorrenza> getPercorrenze() {
+        return percorrenze;
+    }
+
+    public void setPercorrenze(List<Percorrenza> percorrenze) {
+        this.percorrenze = percorrenze;
     }
 }

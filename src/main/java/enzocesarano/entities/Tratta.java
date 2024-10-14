@@ -2,7 +2,7 @@ package enzocesarano.entities;
 
 import jakarta.persistence.*;
 
-import java.time.LocalTime;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -12,19 +12,20 @@ public class Tratta {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id_tratta;
+
     private String zonaPartenza;
     private String capolinea;
-    private LocalTime tempoPrevisto;
-    @ManyToOne
-    @JoinColumn(name = "id_mezzo")
-    private Mezzo mezzo;
+    private int tempoPrevisto;
 
-    public Tratta(UUID id_tratta, String zonaPartenza, String capolinea, LocalTime tempoPrevisto, Mezzo mezzo) {
-        this.id_tratta = id_tratta;
+    @OneToMany(mappedBy = "tratta", cascade = CascadeType.ALL)
+    private List<Percorrenza> percorrenze;
+
+
+    public Tratta(String zonaPartenza, String capolinea, int tempoPrevisto, List<Percorrenza> percorrenze) {
         this.zonaPartenza = zonaPartenza;
         this.capolinea = capolinea;
         this.tempoPrevisto = tempoPrevisto;
-        this.mezzo = mezzo;
+        this.percorrenze = percorrenze;
     }
 
     public Tratta() {
@@ -32,6 +33,10 @@ public class Tratta {
 
     public UUID getId_tratta() {
         return id_tratta;
+    }
+
+    public void setId_tratta(UUID id_tratta) {
+        this.id_tratta = id_tratta;
     }
 
     public String getZonaPartenza() {
@@ -50,19 +55,19 @@ public class Tratta {
         this.capolinea = capolinea;
     }
 
-    public LocalTime getTempoPrevisto() {
+    public int getTempoPrevisto() {
         return tempoPrevisto;
     }
 
-    public void setTempoPrevisto(LocalTime tempoPrevisto) {
+    public void setTempoPrevisto(int tempoPrevisto) {
         this.tempoPrevisto = tempoPrevisto;
     }
 
-    public Mezzo getMezzo() {
-        return mezzo;
+    public List<Percorrenza> getPercorrenze() {
+        return percorrenze;
     }
 
-    public void setMezzo(Mezzo mezzo) {
-        this.mezzo = mezzo;
+    public void setPercorrenze(List<Percorrenza> percorrenze) {
+        this.percorrenze = percorrenze;
     }
 }
