@@ -1,5 +1,6 @@
 package enzocesarano.entities;
 
+import enzocesarano.entities.ENUM.TipoUtente;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -15,14 +16,18 @@ public class Utenti {
     private String nome;
     private String cognome;
     private LocalDate data_di_nascita;
+    private TipoUtente tipoUtente;
+    private Tessera id_tessera;
 
     public Utenti() {
     }
 
-    public Utenti(String nome, String cognome, LocalDate data_di_nascita) {
+    public Utenti(String nome, String cognome, LocalDate data_di_nascita, TipoUtente tipoUtente) {
         this.nome = nome;
         this.cognome = cognome;
         this.data_di_nascita = data_di_nascita;
+        this.tipoUtente = tipoUtente;
+
     }
 
     public String getNome() {
