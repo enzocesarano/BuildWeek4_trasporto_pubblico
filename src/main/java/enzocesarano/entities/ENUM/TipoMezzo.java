@@ -1,5 +1,5 @@
 package enzocesarano.entities.ENUM;
 
-public enum Mezzo {
+public enum TipoMezzo {
     BUS, TRAM
 }

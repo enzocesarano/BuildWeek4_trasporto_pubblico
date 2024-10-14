@@ -1,16 +1,27 @@
 package enzocesarano.entities;
 
+import enzocesarano.entities.ENUM.TipoPuntoDiEmissione;
+import jakarta.persistence.*;
+
 import java.util.UUID;
 
+@Entity
+@Table(name = "Punti_Di_Emissione")
 public class PuntoDiEmissione {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id_punto_emissione;
     private String nome_punto;
-    private PuntoDiEmissione puntoDiEmissione;
+    @Enumerated(EnumType.STRING)
+    private TipoPuntoDiEmissione tipo_puntoDiEmissione;
 
-    public PuntoDiEmissione(UUID id_punto_emissione, String nome_punto, PuntoDiEmissione puntoDiEmissione) {
+    public PuntoDiEmissione(UUID id_punto_emissione, String nome_punto, TipoPuntoDiEmissione tipo_puntoDiEmissione) {
         this.id_punto_emissione = id_punto_emissione;
         this.nome_punto = nome_punto;
-        this.puntoDiEmissione = puntoDiEmissione;
+        this.tipo_puntoDiEmissione = tipo_puntoDiEmissione;
+    }
+
+    public PuntoDiEmissione() {
     }
 
     public UUID getId_punto_emissione() {
@@ -26,11 +37,11 @@ public class PuntoDiEmissione {
         this.nome_punto = nome_punto;
     }
 
-    public PuntoDiEmissione getPuntoDiEmissione() {
-        return puntoDiEmissione;
+    public TipoPuntoDiEmissione getTipo_puntoDiEmissione() {
+        return tipo_puntoDiEmissione;
     }
 
-    public void setPuntoDiEmissione(PuntoDiEmissione puntoDiEmissione) {
-        this.puntoDiEmissione = puntoDiEmissione;
+    public void setTipo_puntoDiEmissione(TipoPuntoDiEmissione tipo_puntoDiEmissione) {
+        this.tipo_puntoDiEmissione = tipo_puntoDiEmissione;
     }
 }

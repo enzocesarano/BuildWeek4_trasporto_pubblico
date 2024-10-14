@@ -1,5 +1,5 @@
 package enzocesarano.entities.ENUM;
 
-public enum PuntoDiEmissione {
+public enum TipoPuntoDiEmissione {
     DISTRIBUTORE_AUTOMATICO, RIVENDITORE_AUTORIZZATO
 }

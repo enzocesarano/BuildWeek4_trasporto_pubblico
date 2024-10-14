@@ -11,23 +11,42 @@ import java.util.UUID;
 public class Utenti {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID numero_tessera;
+    private UUID id_utente;
 
     private String nome;
     private String cognome;
     private LocalDate data_di_nascita;
+    @Enumerated(EnumType.STRING)
     private TipoUtente tipoUtente;
+    @OneToOne
     private Tessera id_tessera;
 
     public Utenti() {
     }
 
-    public Utenti(String nome, String cognome, LocalDate data_di_nascita, TipoUtente tipoUtente) {
+    public Utenti(UUID id_utente, String nome, String cognome, LocalDate data_di_nascita, TipoUtente tipoUtente, Tessera id_tessera) {
+        this.id_utente = id_utente;
         this.nome = nome;
         this.cognome = cognome;
         this.data_di_nascita = data_di_nascita;
         this.tipoUtente = tipoUtente;
+        this.id_tessera = id_tessera;
+    }
 
+    public Tessera getId_tessera() {
+        return id_tessera;
+    }
+
+    public void setId_tessera(Tessera id_tessera) {
+        this.id_tessera = id_tessera;
+    }
+
+    public TipoUtente getTipoUtente() {
+        return tipoUtente;
+    }
+
+    public void setTipoUtente(TipoUtente tipoUtente) {
+        this.tipoUtente = tipoUtente;
     }
 
     public String getNome() {
@@ -55,7 +74,7 @@ public class Utenti {
     }
 
     public UUID getNumero_tessera() {
-        return numero_tessera;
+        return id_utente;
     }
 
 
@@ -65,7 +84,7 @@ public class Utenti {
                 ", nome='" + nome + '\'' +
                 ", cognome='" + cognome + '\'' +
                 ", data_di_nascita=" + data_di_nascita +
-                ", numero_tessera=" + numero_tessera +
+                ", numero_tessera=" + id_utente +
                 '}';
     }
 }
