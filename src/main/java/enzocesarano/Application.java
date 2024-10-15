@@ -45,8 +45,6 @@ public class Application {
         Utenti utenteId2 = dd.getEntityById(Utenti.class, "777097b2-fa1d-405f-b899-fd1dd24e945e");
 
 
-
-
         Tessera tessera1 = new Tessera(LocalDate.of(2023, 1, 1), LocalDate.of(2024, 1, 1), utenteId1, abbonamenti1);
         Tessera tessera2 = new Tessera(LocalDate.of(2023, 2, 1), LocalDate.of(2024, 2, 1), utenteId2, abbonamenti1);
 
@@ -71,7 +69,6 @@ public class Application {
 //        abbonamenti1.add(abbonamento2);
 
 
-
         // -------------------------------------------------creazione di biglietti---------------------------------------------------
         Biglietto biglietto1 = new Biglietto(LocalDate.of(2023, 5, 1), true, puntoId1, null);
         Biglietto biglietto2 = new Biglietto(LocalDate.of(2023, 4, 1), false, puntoId2, null);
@@ -94,7 +91,7 @@ public class Application {
         Mezzo mezzoId1 = dd.getEntityById(Mezzo.class, "939378e6-57c2-4c27-a77f-b1fb01b4ecb2");
         Mezzo mezzoId2 = dd.getEntityById(Mezzo.class, "d97a2807-594e-42a0-b855-ce5f6611d643");
         Manutenzione manutenzione1 = new Manutenzione(mezzoId1, LocalDate.of(2023, 5, 10), LocalDate.of(2023, 5, 20), "Sostituzione motore");
-       Manutenzione manutenzione2 = new Manutenzione(mezzoId2, LocalDate.of(2023, 6, 15), LocalDate.of(2023, 6, 25), "Revisione generale");
+        Manutenzione manutenzione2 = new Manutenzione(mezzoId2, LocalDate.of(2023, 6, 15), LocalDate.of(2023, 6, 25), "Revisione generale");
 //        dd.save(manutenzione1);
 //        dd.save(manutenzione2);
 
@@ -123,7 +120,6 @@ public class Application {
 //        tratta2.getPercorrenze().add(percorrenza2);
 
 
-
         // -------------------------------------------------creazione delle validazioni dei biglietti-------------------------------------------------
 
         Biglietto bigliettoId1 = dd.getEntityById(Biglietto.class, "187bed48-6809-42c0-9528-e405714ae3db");
@@ -134,20 +130,33 @@ public class Application {
 
 //        dd.save(validazione1);
 //        dd.save(validazione2);
-        // -------------------------------------------------AbbonamentoDAO ---------------------------------------------------
+
+        // ------------------------------------------------- AbbonamentoDAO ---------------------------------------------------
         System.out.println("---------Verifico se l'abbonamento é valido: ---------");
         boolean valido1 = ad.AbbonamentoValido(UUID.fromString("58db2a83-ecb8-4be7-83d3-ab4a17d0ce66"));
         System.out.println("L'abbonamento é valido? :" + valido1);
 
         System.out.println("---------Abbonamenti per periodo e numero di emissione: ---------");
 
-        LocalDate startDate = LocalDate.of(2023, 1, 1);
-        LocalDate endDate = LocalDate.of(2023, 12, 31);
-        PuntoDiEmissione pE = dd.getEntityById(PuntoDiEmissione.class, "58fe169b-46fc-43e1-b62f-bb6699358e8d");
+        LocalDate startDate = LocalDate.of(2023, 2, 1);
+        LocalDate endDate = LocalDate.of(2024, 1, 31);
+        PuntoDiEmissione pE = dd.getEntityById(PuntoDiEmissione.class, "ffa5e99f-9d03-4cb2-9ede-cab690fa2d08");
 
-        long numeroAbbonamenti = ad.getAbbonamentoStats(startDate, endDate, pE);
-        System.out.println("Numero di abbonamenti: " + numeroAbbonamenti + " per periodo dal: "
-                + startDate + " al: " + endDate + " per il punto di emissione con UUID: " + pE.getId_punto_emissione());
+        try {
+            long numeroAbbonamenti = ad.getAbbonamentoStats(startDate, endDate, pE);
+            if (numeroAbbonamenti == 0) {
+                System.out.println("nessun abbonamento trovato");
+
+            } else {
+
+                System.out.println("Numero di abbonamenti: " + numeroAbbonamenti + " per periodo dal: "
+                        + startDate + " al: " + endDate +
+                        " per il punto di emissione: "
+                        + pE.getNome_punto() +" con UUID: " + pE.getId_punto_emissione());
+            }
+        } catch (NullPointerException e) {
+            System.out.println("Errore durante la ricerca");
+        }
 
         em.close();
         emf.close();
