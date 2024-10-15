@@ -19,10 +19,11 @@ public class Biglietto {
     @OneToOne(mappedBy = "biglietto")
     private ValidazioneBiglietto validazioneBiglietto;
 
-    public Biglietto(LocalDate data_emissione, boolean convalidato, PuntoDiEmissione puntoDiEmissione) {
+    public Biglietto(LocalDate data_emissione, boolean convalidato, PuntoDiEmissione puntoDiEmissione, ValidazioneBiglietto validazioneBiglietto) {
         this.data_emissione = data_emissione;
         this.convalidato = convalidato;
         this.puntoDiEmissione = puntoDiEmissione;
+        this.validazioneBiglietto = validazioneBiglietto;
     }
 
     public Biglietto() {
