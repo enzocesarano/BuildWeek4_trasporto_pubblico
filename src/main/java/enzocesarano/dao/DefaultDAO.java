@@ -60,4 +60,8 @@ public class DefaultDAO {
             System.out.println("Errore durante l'eliminazione: " + e.getMessage());
         }
     }
+
+    public EntityManager getEntityManager() {
+        return this.entityManager;
+    }
 }

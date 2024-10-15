@@ -1,5 +1,6 @@
 package enzocesarano;
 
+import enzocesarano.dao.BigliettoDAO;
 import enzocesarano.dao.DefaultDAO;
 import enzocesarano.entities.*;
 import enzocesarano.entities.ENUM.StatoMezzo;
@@ -23,7 +24,11 @@ public class Application {
         EntityManager em = emf.createEntityManager();
 
 //----------------------------------------------------creazione utenti---------------------------------------------
+        //DAO
         DefaultDAO dd = new DefaultDAO(em);
+        BigliettoDAO bd = new BigliettoDAO(em);
+
+
         Utenti utente1 = new Utenti("Mario", "Rossi", LocalDate.of(1990, 5, 20), TipoUtente.NORMALE);
         Utenti utente2 = new Utenti("Luigi", "Verdi", LocalDate.of(1985, 8, 15), TipoUtente.ADMIN);
 
@@ -66,11 +71,11 @@ public class Application {
 
 
         // -------------------------------------------------creazione di biglietti---------------------------------------------------
-        Biglietto biglietto1 = new Biglietto(LocalDate.of(2023, 5, 1), true, puntoId1, null);
-        Biglietto biglietto2 = new Biglietto(LocalDate.of(2023, 4, 1), false, puntoId2, null);
+        Biglietto biglietto1 = new Biglietto(LocalDate.of(2023, 5, 1), LocalDate.of(2024, 1, 10), true, puntoId1, null);
+        Biglietto biglietto2 = new Biglietto(LocalDate.of(2023, 4, 1), LocalDate.of(2024, 3, 10), false, puntoId2, null);
 
-        //  dd.save(biglietto1);
-        //   dd.save(biglietto2);
+        // dd.save(biglietto1);
+        // dd.save(biglietto2);
 
         // -------------------------------------------------creazione di mezzi---------------------------------------------------
         List<Manutenzione> manutenzioni1 = new ArrayList<>();
@@ -128,9 +133,18 @@ public class Application {
         ValidazioneBiglietto validazione2 = new ValidazioneBiglietto(bigliettoId2, mezzoId2, LocalDateTime.of(2023, 6, 1, 14, 0));
 
         //   dd.save(validazione1);
-        //   dd.save(validazione2);
+        // dd.save(validazione2);
+
+
+        //*********************** 1. Ottengo i biglietti emmessi in un certo periodo **********************************
+        LocalDate inizio = LocalDate.of(2023, 2, 1);
+        LocalDate fine = LocalDate.of(2024, 1, 1);
+        List<Biglietto> biglietti = bd.bigliettiPerPeriodo(inizio, fine);
+
 
         em.close();
         emf.close();
+
+
     }
 }
