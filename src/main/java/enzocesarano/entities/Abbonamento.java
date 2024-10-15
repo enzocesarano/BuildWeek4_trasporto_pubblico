@@ -14,6 +14,7 @@ public class Abbonamento {
     private UUID id_abbonamento;
     private boolean stato;
     private LocalDate data_inizio;
+    private LocalDate data_fine;
     private Periodicità periodicità;
 
     @ManyToOne
@@ -35,6 +36,11 @@ public class Abbonamento {
         this.puntoDiEmissione = puntoDiEmissione;
         this.tessera = tessera;
         this.periodicità = periodicità;
+        if (this.periodicità == Periodicità.SETTIMANALE) {
+            data_fine = data_inizio.plusWeeks(1);
+        } else if (this.periodicità == Periodicità.MENSILE) {
+            data_fine = data_inizio.plusMonths(1);
+        }
     }
 
     public Abbonamento() {
@@ -52,6 +58,13 @@ public class Abbonamento {
         return id_abbonamento;
     }
 
+    public LocalDate getData_fine() {
+        return data_fine;
+    }
+
+    public void setData_fine(LocalDate data_fine) {
+        this.data_fine = data_fine;
+    }
 
     public boolean isStato() {
         return stato;

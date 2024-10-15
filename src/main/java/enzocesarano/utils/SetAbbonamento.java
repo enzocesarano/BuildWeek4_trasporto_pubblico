@@ -13,7 +13,6 @@ import java.util.Scanner;
 public class SetAbbonamento {
     public static void AcquistaAbbonamento(Scanner scanner, DefaultDAO get, Utenti utente) {
         LocalDate dataInizio = LocalDate.now();
-        LocalDate dataFine = dataInizio.plusYears(1);
 
         PuntoDiEmissione puntoDiEmissione = null;
         boolean puntoValido = false;
