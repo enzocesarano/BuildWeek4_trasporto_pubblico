@@ -2,7 +2,7 @@ package enzocesarano.entities;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
@@ -20,9 +20,9 @@ public class ValidazioneBiglietto {
     @JoinColumn(name = "id_mezzo")
     private Mezzo mezzo;
 
-    private LocalDateTime dataValidazione;
+    private LocalDate dataValidazione;
 
-    public ValidazioneBiglietto(Biglietto biglietto, Mezzo mezzo, LocalDateTime dataValidazione) {
+    public ValidazioneBiglietto(Biglietto biglietto, Mezzo mezzo, LocalDate dataValidazione) {
         this.biglietto = biglietto;
         this.mezzo = mezzo;
         this.dataValidazione = dataValidazione;
@@ -51,11 +51,21 @@ public class ValidazioneBiglietto {
         this.mezzo = mezzo;
     }
 
-    public LocalDateTime getDataValidazione() {
+    public LocalDate getDataValidazione() {
         return dataValidazione;
     }
 
-    public void setDataValidazione(LocalDateTime dataValidazione) {
+    public void setDataValidazione(LocalDate dataValidazione) {
         this.dataValidazione = dataValidazione;
+    }
+
+    @Override
+    public String toString() {
+        return "ValidazioneBiglietto{" +
+                "idValidazioneBiglietto=" + idValidazioneBiglietto +
+                ", biglietto=" + biglietto.getId_biglietto() +
+                ", mezzo=" + mezzo.getTipo_mezzo() +
+                ", dataValidazione=" + dataValidazione +
+                '}';
     }
 }

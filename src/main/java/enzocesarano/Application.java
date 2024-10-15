@@ -2,10 +2,12 @@ package enzocesarano;
 
 import enzocesarano.dao.DefaultDAO;
 import enzocesarano.dao.TesseraDAO;
+import enzocesarano.dao.ValidazioneBigliettoDAO;
 import enzocesarano.entities.Abbonamento;
 import enzocesarano.entities.ENUM.TipoUtente;
 import enzocesarano.entities.Tessera;
 import enzocesarano.entities.Utenti;
+import enzocesarano.entities.ValidazioneBiglietto;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
@@ -20,6 +22,8 @@ public class Application {
     public static void main(String[] args) throws Exception {
         EntityManager em = emf.createEntityManager();
         TesseraDAO td = new TesseraDAO(em);
+        ValidazioneBigliettoDAO md = new ValidazioneBigliettoDAO(em);
+
 //----------------------------------------------------creazione utenti---------------------------------------------
         DefaultDAO dd = new DefaultDAO(em);
 //        Utenti utente1 = new Utenti("Mario", "Rossi", LocalDate.of(1990, 5, 20), TipoUtente.NORMALE);
@@ -131,11 +135,18 @@ public class Application {
 ////        dd.save(validazione2);
 
 
-        List<Tessera> tessereScadute = td.ricercaTessereScadute(LocalDate.now());
-        tessereScadute.forEach(System.out::println);
+//        List<Tessera> tessereScadute = td.ricercaTessereScadute(LocalDate.now());
+//        tessereScadute.forEach(System.out::println);
 
 
-        td.rinnovaTessera("0c468e4c-088a-4327-884a-b839d309546e", LocalDate.now());
+//        td.rinnovaTessera("0c468e4c-088a-4327-884a-b839d309546e", LocalDate.now());
+
+        List<ValidazioneBiglietto> bigliettiValidatiPerMezzo = md.ricercaValidazioniPerMezzo("3bd5dd17-0d2d-44cb-8968-81d2d2500215", LocalDate.of(2020, 10, 1), LocalDate.now());
+        bigliettiValidatiPerMezzo.forEach(System.out::println);
+
+        Long result = md.contaValidazioniTotali(LocalDate.of(2020, 1, 1), LocalDate.now());
+        System.out.println("in totale ci sono stati convalidati: " + result + " biglietti");
+
 
         em.close();
         emf.close();
