@@ -22,9 +22,9 @@ public class Tessera {
     @OneToMany(mappedBy = "tessera", cascade = CascadeType.ALL)
     private List<Abbonamento> abbonamenti;
 
-    public Tessera(LocalDate data_aquisto, LocalDate data_scadenza, Utenti utenti, List<Abbonamento> abbonamenti) {
+    public Tessera(LocalDate data_aquisto, Utenti utenti, List<Abbonamento> abbonamenti) {
         this.data_aquisto = data_aquisto;
-        this.data_scadenza = data_scadenza;
+        this.data_scadenza = data_aquisto.plusYears(1);
         this.utenti = utenti;
         this.abbonamenti = abbonamenti;
     }
@@ -72,5 +72,14 @@ public class Tessera {
 
     public void setAbbonamenti(List<Abbonamento> abbonamenti) {
         this.abbonamenti = abbonamenti;
+    }
+
+    @Override
+    public String toString() {
+        return "Tessera{" +
+                "id_tessera=" + id_tessera +
+                ", data_aquisto=" + data_aquisto +
+                ", data_scadenza=" + data_scadenza +
+                '}';
     }
 }
