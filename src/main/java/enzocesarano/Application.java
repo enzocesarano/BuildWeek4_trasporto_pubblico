@@ -94,8 +94,13 @@ public class Application {
 
 
         // -------------------------------------------------creazione di percorrenze---------------------------------------------------
-        Percorrenza percorrenza1 = new Percorrenza(LocalDate.of(2023, 7, 1), LocalTime.of(1, 30), null, mezzo1);
-        Percorrenza percorrenza2 = new Percorrenza(LocalDate.of(2023, 8, 1), LocalTime.of(2, 0), null, mezzo2);
+        Tratta trattaId1 = dd.getEntityById(Tratta.class, "2b3d6c64-3f95-4d97-8c37-b7b1b60f5728");
+        Tratta trattaId2 = dd.getEntityById(Tratta.class, "f9ac7138-1f5d-4c3f-ba02-44372a298752");
+        Mezzo mezzoId1 = dd.getEntityById(Mezzo.class, "3bd5dd17-0d2d-44cb-8968-81d2d2500215");
+        Mezzo mezzoId2 = dd.getEntityById(Mezzo.class, "4acd13fc-c235-4fea-a1ba-6a71b0d434b3");
+        Percorrenza percorrenza1 = new Percorrenza(LocalDate.of(2023, 7, 1), LocalTime.of(1, 30), trattaId1, mezzoId1);
+        Percorrenza percorrenza2 = new Percorrenza(LocalDate.of(2023, 8, 1), LocalTime.of(2, 0), trattaId2, mezzoId2);
+
 
 //        dd.save(percorrenza1);
 //        dd.save(percorrenza2);
