@@ -116,6 +116,7 @@ public class Application {
 //        tratta2.getPercorrenze().add(percorrenza2);
 
 
+
         // -------------------------------------------------creazione delle validazioni dei biglietti-------------------------------------------------
 
         Biglietto bigliettoId1 = dd.getEntityById(Biglietto.class, "187bed48-6809-42c0-9528-e405714ae3db");
