@@ -139,11 +139,13 @@ public class Application {
         //*********************** 1. Ottengo i biglietti emmessi in un certo periodo **********************************
         LocalDate inizio = LocalDate.of(2023, 2, 1);
         LocalDate fine = LocalDate.of(2024, 1, 1);
+
         List<Biglietto> bigliettiPerPeriodo = bd.bigliettiPerPeriodo(inizio, fine);
 
         //*********************** 2. Ottengo i biglietti emmessi in un certo periodo e uncerto punto di emissione **********************************
 
         PuntoDiEmissione puntoDiEmissioneId1 = dd.getEntityById(PuntoDiEmissione.class, "0df5d660-6108-40e3-9660-5508a495640c");
+
         List<Biglietto> bigliettiPerPeriodoEPEmissione = bd.bigliettiPerPuntoEPeriodo(puntoDiEmissioneId1, inizio, fine);
 
 
