@@ -1,5 +1,6 @@
 package enzocesarano;
 
+import enzocesarano.dao.AbbonamentiDAO;
 import enzocesarano.dao.DefaultDAO;
 import enzocesarano.entities.*;
 import enzocesarano.entities.ENUM.StatoMezzo;
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class Application {
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("trasporto_pubblico");
@@ -24,6 +26,7 @@ public class Application {
 
 //----------------------------------------------------creazione utenti---------------------------------------------
         DefaultDAO dd = new DefaultDAO(em);
+        AbbonamentiDAO ad = new AbbonamentiDAO(em);
         Utenti utente1 = new Utenti("Mario", "Rossi", LocalDate.of(1990, 5, 20), TipoUtente.NORMALE);
         Utenti utente2 = new Utenti("Luigi", "Verdi", LocalDate.of(1985, 8, 15), TipoUtente.ADMIN);
 
@@ -42,12 +45,15 @@ public class Application {
         Utenti utenteId2 = dd.getEntityById(Utenti.class, "777097b2-fa1d-405f-b899-fd1dd24e945e");
 
 
+
+
         Tessera tessera1 = new Tessera(LocalDate.of(2023, 1, 1), LocalDate.of(2024, 1, 1), utenteId1, abbonamenti1);
         Tessera tessera2 = new Tessera(LocalDate.of(2023, 2, 1), LocalDate.of(2024, 2, 1), utenteId2, abbonamenti1);
 
 
 //        dd.save(tessera1);
 //        dd.save(tessera2);
+
 
         // -------------------------------------------------creazione di abbonamenti---------------------------------------------------
 
@@ -63,6 +69,7 @@ public class Application {
 //
 //        abbonamenti1.add(abbonamento1);
 //        abbonamenti1.add(abbonamento2);
+
 
 
         // -------------------------------------------------creazione di biglietti---------------------------------------------------
@@ -127,6 +134,20 @@ public class Application {
 
 //        dd.save(validazione1);
 //        dd.save(validazione2);
+        // -------------------------------------------------AbbonamentoDAO ---------------------------------------------------
+        System.out.println("---------Verifico se l'abbonamento é valido: ---------");
+        boolean valido1 = ad.AbbonamentoValido(UUID.fromString("58db2a83-ecb8-4be7-83d3-ab4a17d0ce66"));
+        System.out.println("L'abbonamento é valido? :" + valido1);
+
+        System.out.println("---------Abbonamenti per periodo e numero di emissione: ---------");
+
+        LocalDate startDate = LocalDate.of(2023, 1, 1);
+        LocalDate endDate = LocalDate.of(2023, 12, 31);
+        PuntoDiEmissione pE = dd.getEntityById(PuntoDiEmissione.class, "58fe169b-46fc-43e1-b62f-bb6699358e8d");
+
+        long numeroAbbonamenti = ad.getAbbonamentoStats(startDate, endDate, pE);
+        System.out.println("Numero di abbonamenti: " + numeroAbbonamenti + " per periodo dal: "
+                + startDate + " al: " + endDate + " per il punto di emissione con UUID: " + pE.getId_punto_emissione());
 
         em.close();
         emf.close();

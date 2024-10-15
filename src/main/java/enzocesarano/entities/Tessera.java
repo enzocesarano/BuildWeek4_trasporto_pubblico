@@ -27,6 +27,7 @@ public class Tessera {
         this.data_scadenza = data_scadenza;
         this.utenti = utenti;
         this.abbonamenti = abbonamenti;
+
     }
 
     public Tessera() {
@@ -73,4 +74,5 @@ public class Tessera {
     public void setAbbonamenti(List<Abbonamento> abbonamenti) {
         this.abbonamenti = abbonamenti;
     }
+
 }
