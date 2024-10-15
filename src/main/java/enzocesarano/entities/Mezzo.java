@@ -28,6 +28,9 @@ public class Mezzo {
     @OneToMany(mappedBy = "mezzo", cascade = CascadeType.ALL)
     private List<Percorrenza> percorrenze;
 
+    @OneToMany(mappedBy = "mezzo", cascade = CascadeType.ALL)
+    private List<Manutenzione> manutenzioni;
+
     public Mezzo() {
     }
 
@@ -43,9 +46,6 @@ public class Mezzo {
         return id_mezzo;
     }
 
-    public void setId_mezzo(UUID id_mezzo) {
-        this.id_mezzo = id_mezzo;
-    }
 
     public TipoMezzo getTipo_mezzo() {
         return tipo_mezzo;

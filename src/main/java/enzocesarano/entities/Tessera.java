@@ -41,9 +41,6 @@ public class Tessera {
         return id_tessera;
     }
 
-    public void setId_tessera(UUID id_tessera) {
-        this.id_tessera = id_tessera;
-    }
 
     public LocalDate getData_aquisto() {
         return data_aquisto;
