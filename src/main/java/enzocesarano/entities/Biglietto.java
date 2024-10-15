@@ -14,17 +14,14 @@ public class Biglietto {
     private LocalDate data_emissione;
     private boolean convalidato;
     @ManyToOne
-    @JoinColumn(name = "id_utenti")
-    private Utenti utenti;
-    @ManyToOne
     @JoinColumn(name = "id_punto_emissione")
     private PuntoDiEmissione puntoDiEmissione;
+    @OneToOne(mappedBy = "biglietto")
+    private ValidazioneBiglietto validazioneBiglietto;
 
-
-    public Biglietto(LocalDate data_emissione, boolean convalidato, Utenti utenti, PuntoDiEmissione puntoDiEmissione) {
+    public Biglietto(LocalDate data_emissione, boolean convalidato, PuntoDiEmissione puntoDiEmissione) {
         this.data_emissione = data_emissione;
         this.convalidato = convalidato;
-        this.utenti = utenti;
         this.puntoDiEmissione = puntoDiEmissione;
     }
 
@@ -35,10 +32,6 @@ public class Biglietto {
         return id_biglietto;
     }
 
-    public void setId_biglietto(UUID id_biglietto) {
-        this.id_biglietto = id_biglietto;
-    }
-
     public LocalDate getData_emissione() {
         return data_emissione;
     }
@@ -47,13 +40,6 @@ public class Biglietto {
         this.data_emissione = data_emissione;
     }
 
-    public Utenti getUtenti() {
-        return utenti;
-    }
-
-    public void setUtenti(Utenti utenti) {
-        this.utenti = utenti;
-    }
 
     public PuntoDiEmissione getPuntoDiEmissione() {
         return puntoDiEmissione;

@@ -12,7 +12,7 @@ public class ValidazioneBiglietto {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID idValidazioneBiglietto;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "id_biglietto")
     private Biglietto biglietto;
 
@@ -33,10 +33,6 @@ public class ValidazioneBiglietto {
 
     public UUID getIdValidazioneBiglietto() {
         return idValidazioneBiglietto;
-    }
-
-    public void setIdValidazioneBiglietto(UUID idValidazioneBiglietto) {
-        this.idValidazioneBiglietto = idValidazioneBiglietto;
     }
 
     public Biglietto getBiglietto() {

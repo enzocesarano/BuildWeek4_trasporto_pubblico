@@ -48,9 +48,6 @@ public class Abbonamento {
         return id_abbonamento;
     }
 
-    public void setId_abbonamento(UUID id_abbonamento) {
-        this.id_abbonamento = id_abbonamento;
-    }
 
     public boolean isStato() {
         return stato;
