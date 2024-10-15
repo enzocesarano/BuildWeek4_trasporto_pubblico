@@ -35,9 +35,6 @@ public class Tratta {
         return id_tratta;
     }
 
-    public void setId_tratta(UUID id_tratta) {
-        this.id_tratta = id_tratta;
-    }
 
     public String getZonaPartenza() {
         return zonaPartenza;

@@ -22,9 +22,6 @@ public class Utenti {
     private Tessera tessera;
 
     @OneToMany(mappedBy = "utenti", cascade = CascadeType.ALL)
-    private List<Biglietto> biglietti;
-
-    @OneToMany(mappedBy = "utenti", cascade = CascadeType.ALL)
     private List<Abbonamento> abbonamenti;
 
     public Utenti() {
@@ -41,10 +38,6 @@ public class Utenti {
 
     public UUID getId_utente() {
         return id_utente;
-    }
-
-    public void setId_utente(UUID id_utente) {
-        this.id_utente = id_utente;
     }
 
     public String getNome() {
@@ -85,14 +78,6 @@ public class Utenti {
 
     public void setTessera(Tessera tessera) {
         this.tessera = tessera;
-    }
-
-    public List<Biglietto> getBiglietti() {
-        return biglietti;
-    }
-
-    public void setBiglietti(List<Biglietto> biglietti) {
-        this.biglietti = biglietti;
     }
 
     public List<Abbonamento> getAbbonamenti() {

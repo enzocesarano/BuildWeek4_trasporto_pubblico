@@ -41,9 +41,6 @@ public class PuntoDiEmissione {
         return id_punto_emissione;
     }
 
-    public void setId_punto_emissione(UUID id_punto_emissione) {
-        this.id_punto_emissione = id_punto_emissione;
-    }
 
     public String getNome_punto() {
         return nome_punto;
