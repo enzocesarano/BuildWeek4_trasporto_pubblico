@@ -37,9 +37,6 @@ public class Percorrenza {
         return id_percorrenza;
     }
 
-    public void setId_percorrenza(UUID id_percorrenza) {
-        this.id_percorrenza = id_percorrenza;
-    }
 
     public LocalDate getData() {
         return data;
