@@ -57,4 +57,9 @@ public class Biglietto {
     public void setConvalidato(boolean convalidato) {
         this.convalidato = convalidato;
     }
+
+    @Override
+    public String toString() {
+        return "Biglietto " + id_biglietto;
+    }
 }

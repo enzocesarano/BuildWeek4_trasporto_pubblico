@@ -19,7 +19,6 @@ public class DefaultDAO {
             t.begin();
             entityManager.persist(obj);
             t.commit();
-            System.out.println(obj + " SALVATO!");
         } catch (Exception e) {
             if (t.isActive()) {
                 t.rollback();
@@ -49,7 +48,6 @@ public class DefaultDAO {
                 t.begin();
                 entityManager.remove(obj);
                 t.commit();
-                System.out.println(obj + " Eliminato!");
             } else {
                 System.out.println("Entity non trovata.");
             }

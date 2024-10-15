@@ -22,14 +22,16 @@ public class Tessera {
     @OneToMany(mappedBy = "tessera", cascade = CascadeType.ALL)
     private List<Abbonamento> abbonamenti;
 
-    public Tessera(LocalDate data_aquisto, Utenti utenti) {
+    public Tessera(LocalDate data_aquisto, Utenti utenti, List<Abbonamento> abbonamenti) {
         this.data_aquisto = data_aquisto;
         this.data_scadenza = data_aquisto.plusYears(1);
         this.utenti = utenti;
+        this.abbonamenti = abbonamenti;
     }
 
     public Tessera() {
     }
+
 
     // rinnovo tessera
     public boolean isValida() {

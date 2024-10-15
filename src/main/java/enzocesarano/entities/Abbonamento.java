@@ -1,5 +1,6 @@
 package enzocesarano.entities;
 
+import enzocesarano.entities.ENUM.Periodicità;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -13,7 +14,7 @@ public class Abbonamento {
     private UUID id_abbonamento;
     private boolean stato;
     private LocalDate data_inizio;
-    private LocalDate data_fine;
+    private Periodicità periodicità;
 
     @ManyToOne
     @JoinColumn(name = "id_utenti")
@@ -27,21 +28,24 @@ public class Abbonamento {
     @JoinColumn(name = "id_tessera")
     private Tessera tessera;
 
-    public Abbonamento(boolean stato, LocalDate data_inizio, LocalDate data_fine, Utenti utenti, PuntoDiEmissione puntoDiEmissione, Tessera tessera) {
+    public Abbonamento(boolean stato, LocalDate data_inizio, Utenti utenti, PuntoDiEmissione puntoDiEmissione, Tessera tessera, Periodicità periodicità) {
         this.stato = stato;
         this.data_inizio = data_inizio;
-        this.data_fine = data_fine;
         this.utenti = utenti;
         this.puntoDiEmissione = puntoDiEmissione;
         this.tessera = tessera;
+        this.periodicità = periodicità;
     }
 
     public Abbonamento() {
     }
 
-    // validità
-    public boolean isAbbValido() {
-        return data_fine.isAfter(LocalDate.now());
+    public Periodicità getPeriodicità() {
+        return periodicità;
+    }
+
+    public void setPeriodicità(Periodicità periodicità) {
+        this.periodicità = periodicità;
     }
 
     public UUID getId_abbonamento() {
@@ -63,14 +67,6 @@ public class Abbonamento {
 
     public void setData_inizio(LocalDate data_inizio) {
         this.data_inizio = data_inizio;
-    }
-
-    public LocalDate getData_fine() {
-        return data_fine;
-    }
-
-    public void setData_fine(LocalDate data_fine) {
-        this.data_fine = data_fine;
     }
 
     public Utenti getUtenti() {
@@ -95,5 +91,17 @@ public class Abbonamento {
 
     public void setTessera(Tessera tessera) {
         this.tessera = tessera;
+    }
+
+    @Override
+    public String toString() {
+        return "Abbonamento{" +
+                "id_abbonamento=" + id_abbonamento +
+                ", stato=" + stato +
+                ", data_inizio=" + data_inizio +
+                ", utenti=" + utenti +
+                ", puntoDiEmissione=" + puntoDiEmissione +
+                ", tessera=" + tessera +
+                '}';
     }
 }
