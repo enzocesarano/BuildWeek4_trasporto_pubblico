@@ -38,8 +38,8 @@ public class Application {
 
         //  -----------------------------------------creazione tessere---------------------------------------
         List<Abbonamento> abbonamenti1 = new ArrayList<>();
-        Utenti utenteId1 = dd.getEntityById(Utenti.class, "8b5b8764-3d8e-4c9f-a709-6394517ba4a7");
-        Utenti utenteId2 = dd.getEntityById(Utenti.class, "eca82a95-f81b-4577-ac67-64d53f690514");
+        Utenti utenteId1 = dd.getEntityById(Utenti.class, "4b8c9802-6a02-427e-a069-3178d6acd80f");
+        Utenti utenteId2 = dd.getEntityById(Utenti.class, "777097b2-fa1d-405f-b899-fd1dd24e945e");
 
 
         Tessera tessera1 = new Tessera(LocalDate.of(2023, 1, 1), LocalDate.of(2024, 1, 1), utenteId1, abbonamenti1);
@@ -51,10 +51,10 @@ public class Application {
 
         // -------------------------------------------------creazione di abbonamenti---------------------------------------------------
 
-        PuntoDiEmissione puntoId1 = dd.getEntityById(PuntoDiEmissione.class, "28fe5187-94bc-43dc-a99b-17fd8c017108");
-        PuntoDiEmissione puntoId2 = dd.getEntityById(PuntoDiEmissione.class, "a4bf8d2c-6855-4679-876a-725f495796f1");
-        Tessera tesseraId1 = dd.getEntityById(Tessera.class, "0c468e4c-088a-4327-884a-b839d309546e");
-        Tessera tesseraId2 = dd.getEntityById(Tessera.class, "a3cb2167-9e32-4102-a810-7feac557d9c1");
+        PuntoDiEmissione puntoId1 = dd.getEntityById(PuntoDiEmissione.class, "58fe169b-46fc-43e1-b62f-bb6699358e8d");
+        PuntoDiEmissione puntoId2 = dd.getEntityById(PuntoDiEmissione.class, "ffa5e99f-9d03-4cb2-9ede-cab690fa2d08");
+        Tessera tesseraId1 = dd.getEntityById(Tessera.class, "6fcd5a67-d5cb-4d7c-a208-60faa6078359");
+        Tessera tesseraId2 = dd.getEntityById(Tessera.class, "78768ae3-1542-4a80-a8a5-0cdbbf725b0c");
 
         Abbonamento abbonamento1 = new Abbonamento(true, LocalDate.of(2023, 1, 1), LocalDate.of(2023, 12, 31), utenteId1, puntoId1, tesseraId1);
         Abbonamento abbonamento2 = new Abbonamento(true, LocalDate.of(2023, 2, 1), LocalDate.of(2024, 1, 31), utenteId2, puntoId2, tesseraId2);
@@ -66,8 +66,8 @@ public class Application {
 
 
         // -------------------------------------------------creazione di biglietti---------------------------------------------------
-        Biglietto biglietto1 = new Biglietto(LocalDate.of(2023, 5, 1), true, punto1, null);
-        Biglietto biglietto2 = new Biglietto(LocalDate.of(2023, 4, 1), false, punto2, null);
+        Biglietto biglietto1 = new Biglietto(LocalDate.of(2023, 5, 1), true, puntoId1, null);
+        Biglietto biglietto2 = new Biglietto(LocalDate.of(2023, 4, 1), false, puntoId2, null);
 
 //        dd.save(biglietto1);
 //        dd.save(biglietto2);
@@ -84,8 +84,10 @@ public class Application {
 
         // -------------------------------------------------creazione delle manutenzioni-------------------------------------------------
 
-        Manutenzione manutenzione1 = new Manutenzione(mezzo1, LocalDate.of(2023, 5, 10), LocalDate.of(2023, 5, 20), "Sostituzione motore");
-        Manutenzione manutenzione2 = new Manutenzione(mezzo2, LocalDate.of(2023, 6, 15), LocalDate.of(2023, 6, 25), "Revisione generale");
+        Mezzo mezzoId1 = dd.getEntityById(Mezzo.class, "939378e6-57c2-4c27-a77f-b1fb01b4ecb2");
+        Mezzo mezzoId2 = dd.getEntityById(Mezzo.class, "d97a2807-594e-42a0-b855-ce5f6611d643");
+        Manutenzione manutenzione1 = new Manutenzione(mezzoId1, LocalDate.of(2023, 5, 10), LocalDate.of(2023, 5, 20), "Sostituzione motore");
+       Manutenzione manutenzione2 = new Manutenzione(mezzoId2, LocalDate.of(2023, 6, 15), LocalDate.of(2023, 6, 25), "Revisione generale");
 //        dd.save(manutenzione1);
 //        dd.save(manutenzione2);
 
@@ -94,10 +96,8 @@ public class Application {
 
 
         // -------------------------------------------------creazione di percorrenze---------------------------------------------------
-        Tratta trattaId1 = dd.getEntityById(Tratta.class, "2b3d6c64-3f95-4d97-8c37-b7b1b60f5728");
-        Tratta trattaId2 = dd.getEntityById(Tratta.class, "f9ac7138-1f5d-4c3f-ba02-44372a298752");
-        Mezzo mezzoId1 = dd.getEntityById(Mezzo.class, "3bd5dd17-0d2d-44cb-8968-81d2d2500215");
-        Mezzo mezzoId2 = dd.getEntityById(Mezzo.class, "4acd13fc-c235-4fea-a1ba-6a71b0d434b3");
+        Tratta trattaId1 = dd.getEntityById(Tratta.class, "a1c35f74-e70b-441f-a3d8-ad4b881c1334");
+        Tratta trattaId2 = dd.getEntityById(Tratta.class, "cf9276d5-4d37-4736-bde5-1d9d061fa8c5");
         Percorrenza percorrenza1 = new Percorrenza(LocalDate.of(2023, 7, 1), LocalTime.of(1, 30), trattaId1, mezzoId1);
         Percorrenza percorrenza2 = new Percorrenza(LocalDate.of(2023, 8, 1), LocalTime.of(2, 0), trattaId2, mezzoId2);
 
@@ -117,8 +117,12 @@ public class Application {
 
 
         // -------------------------------------------------creazione delle validazioni dei biglietti-------------------------------------------------
-        ValidazioneBiglietto validazione1 = new ValidazioneBiglietto(biglietto1, mezzo1, LocalDateTime.of(2023, 5, 1, 12, 30));
-        ValidazioneBiglietto validazione2 = new ValidazioneBiglietto(biglietto2, mezzo2, LocalDateTime.of(2023, 6, 1, 14, 0));
+
+        Biglietto bigliettoId1 = dd.getEntityById(Biglietto.class, "187bed48-6809-42c0-9528-e405714ae3db");
+        Biglietto bigliettoId2 = dd.getEntityById(Biglietto.class, "c840c872-2aa0-4c69-816a-63a2cb13f25d");
+
+        ValidazioneBiglietto validazione1 = new ValidazioneBiglietto(bigliettoId1, mezzoId1, LocalDateTime.of(2023, 5, 1, 12, 30));
+        ValidazioneBiglietto validazione2 = new ValidazioneBiglietto(bigliettoId2, mezzoId1, LocalDateTime.of(2023, 6, 1, 14, 0));
 
 //        dd.save(validazione1);
 //        dd.save(validazione2);
