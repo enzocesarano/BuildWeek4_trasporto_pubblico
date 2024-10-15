@@ -21,11 +21,10 @@ public class Tratta {
     private List<Percorrenza> percorrenze;
 
 
-    public Tratta(String zonaPartenza, String capolinea, int tempoPrevisto, List<Percorrenza> percorrenze) {
+    public Tratta(String zonaPartenza, String capolinea, int tempoPrevisto) {
         this.zonaPartenza = zonaPartenza;
         this.capolinea = capolinea;
         this.tempoPrevisto = tempoPrevisto;
-        this.percorrenze = percorrenze;
     }
 
     public Tratta() {

@@ -34,12 +34,10 @@ public class Mezzo {
     public Mezzo() {
     }
 
-    public Mezzo(TipoMezzo tipo_mezzo, int capienza, StatoMezzo statoMezzo, List<ValidazioneBiglietto> bigliettiValidi, List<Percorrenza> percorrenze) {
+    public Mezzo(TipoMezzo tipo_mezzo, int capienza, StatoMezzo statoMezzo) {
         this.tipo_mezzo = tipo_mezzo;
         this.capienza = capienza;
         this.statoMezzo = statoMezzo;
-        this.bigliettiValidi = bigliettiValidi;
-        this.percorrenze = percorrenze;
     }
 
     public UUID getId_mezzo() {

@@ -25,13 +25,10 @@ public class PuntoDiEmissione {
     @OneToMany(mappedBy = "puntoDiEmissione", cascade = CascadeType.ALL)
     private List<Abbonamento> abbonamentiEmessi;
 
-    public PuntoDiEmissione(String nome_punto, boolean attivo, TipoPuntoDiEmissione tipo_puntoDiEmissione,
-                            List<Biglietto> bigliettiEmessi, List<Abbonamento> abbonamentiEmessi) {
+    public PuntoDiEmissione(String nome_punto, boolean attivo, TipoPuntoDiEmissione tipo_puntoDiEmissione) {
         this.nome_punto = nome_punto;
         this.attivo = attivo;
         this.tipo_puntoDiEmissione = tipo_puntoDiEmissione;
-        this.bigliettiEmessi = bigliettiEmessi;
-        this.abbonamentiEmessi = abbonamentiEmessi;
     }
 
     public PuntoDiEmissione() {
