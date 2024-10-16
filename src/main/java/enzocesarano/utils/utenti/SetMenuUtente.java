@@ -60,7 +60,7 @@ public class SetMenuUtente {
                     break;
                 case 4:
                     em.refresh(utente1);
-                    if (utente1.getTessera() != null && utente1.getTessera().getAbbonamenti().isEmpty()) {
+                    if (utente1.getTessera() != null && utente1.getTessera().getAbbonamenti().isEmpty()) { // lista abbonamenti vuota?
                         SetAbbonamento.AcquistaAbbonamento(scanner, dd, utente1);
                     } else if (utente1.getTessera() == null) {
                         System.out.println("Non hai una tessera. Acquista una tessera prima di fare l'abbonamento.");
