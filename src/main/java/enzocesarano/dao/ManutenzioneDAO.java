@@ -1,5 +1,6 @@
 package enzocesarano.dao;
 
+import enzocesarano.entities.ENUM.StatoMezzo;
 import enzocesarano.entities.ENUM.TipoMezzo;
 import enzocesarano.entities.Manutenzione;
 import jakarta.persistence.EntityManager;
@@ -19,7 +20,7 @@ public class ManutenzioneDAO {
         this.entityManager = entityManager;
     }
 
-    // Metodo che calcola la durata totale della manutenzione e restituire il tipo di mezzo e il motivo della manutenzione
+    // Metodo che calcola la durata totale della manutenzione e restituisce il tipo di mezzo e il motivo della manutenzione
     public String calcolaDurataTipoMotivoManutenzione(UUID idMezzo) {
         try {
 
@@ -37,7 +38,7 @@ public class ManutenzioneDAO {
 
             for (Object[] result : results) {
                 Manutenzione manutenzione = (Manutenzione) result[0];  //oggetto
-                tipoMezzo = (TipoMezzo) result[1];  //tipo mezzo presoo da enum
+                tipoMezzo = (TipoMezzo) result[1];  //tipo mezzo preso da enum
                 motivoManutenzione = (String) result[2];  //motivo
 
                 if (manutenzione.getData_inizio() != null && manutenzione.getData_fine() != null) {
@@ -55,10 +56,19 @@ public class ManutenzioneDAO {
         }
     }
 
-    // Metodo che calcola quante volte un mezzo è andato in manutenzione in un determinato periodo
+    // Metodo che calcola quante volte un mezzo è andato in manutenzione in un determinato periodo e restuisce anche lo stato
 
     public String calcolaNumeroManutenzioniInPeriodo(UUID idMezzo, LocalDate dataInizio, LocalDate dataFine) {
         try {
+
+            LocalDate today = LocalDate.now();
+            if (dataInizio.isAfter(today) || dataFine.isAfter(today)) {
+                return "Errore: Le date inserite non possono essere future. Reinserisci un intervallo di date valido.";
+            }
+
+            if (dataInizio.isAfter(dataFine)) {
+                return "Errore: La data di inizio non può essere successiva alla data di fine.";
+            }
 
             Query queryCount = entityManager.createQuery(
                     "SELECT COUNT(m) FROM Manutenzione m " +
@@ -72,11 +82,22 @@ public class ManutenzioneDAO {
 
             Long count = (Long) queryCount.getSingleResult();
 
+            // Lo stato del mezzo
+            Query queryStato = entityManager.createQuery("SELECT m.statoMezzo FROM Mezzo m WHERE m.id_mezzo = :idMezzo");
+            queryStato.setParameter("idMezzo", idMezzo);
+            StatoMezzo statoMezzo = (StatoMezzo) queryStato.getSingleResult();
+
+            String statoMezzoDescrizione = statoMezzo == StatoMezzo.SERVIZIO
+                    ? "attualmente in servizio."
+                    : "attualmente in manutenzione.";
+
             if (count == 0) {
-                return "Nessuna manutenzione trovata per il mezzo con ID " + idMezzo + " nel periodo specificato.";
+                return "Nessuna manutenzione trovata per il mezzo con ID " + idMezzo + " nel periodo specificato. " +
+                        "Lo stato del mezzo è \" + statoMezzoDescrizione";
             }
 
-            return "Il mezzo con ID " + idMezzo + " è andato in manutenzione " + count + " volta/e nel periodo dal " + dataInizio + " al " + dataFine + ".";
+            return "Il mezzo con ID " + idMezzo + " è andato in manutenzione " + count + " volta/e nel periodo dal " + dataInizio + " al "
+                    + dataFine + ". Lo stato del mezzo è " + statoMezzoDescrizione;
 
         } catch (NoResultException e) {
             return "Errore: Nessun mezzo trovato con ID " + idMezzo;
