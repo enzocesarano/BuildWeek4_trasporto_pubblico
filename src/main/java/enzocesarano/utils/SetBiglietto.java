@@ -2,11 +2,13 @@ package enzocesarano.utils;
 
 import enzocesarano.dao.DefaultDAO;
 import enzocesarano.entities.Biglietto;
+import enzocesarano.entities.ENUM.StatoMezzo;
 import enzocesarano.entities.Mezzo;
 import enzocesarano.entities.PuntoDiEmissione;
 import enzocesarano.entities.ValidazioneBiglietto;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Scanner;
 
 
@@ -14,23 +16,37 @@ public class SetBiglietto {
 
     public static void AcquistaBiglietto(Scanner scanner, DefaultDAO get) {
         LocalDate dataEmissione = LocalDate.now();
-
-        PuntoDiEmissione puntoDiEmissione = null;
         boolean puntoValido = false;
+        PuntoDiEmissione puntoDiEmissione = null;
+        List<PuntoDiEmissione> puntiDiEmissione = get.getAllEntities(PuntoDiEmissione.class);
 
+        List<PuntoDiEmissione> puntiAttivi = puntiDiEmissione.stream()
+                .filter(PuntoDiEmissione::isAttivo)
+                .toList();
+
+        if (puntiAttivi.isEmpty()) {
+            System.out.println("Non ci sono punti di emissione attivi disponibili.");
+            return;
+        }
+
+        System.out.println("Seleziona un punto di emissione:");
+        puntiAttivi.forEach(p -> System.out.println((puntiAttivi.indexOf(p) + 1) + ". " + p.getNome_punto()));
+
+        int scelta = -1;
         while (!puntoValido) {
-            System.out.println("Inserisci l'ID del punto di emissione: ");
+            System.out.print("Inserisci il numero del punto di emissione: ");
             try {
-                String idPunto = scanner.nextLine();
-                puntoDiEmissione = get.getEntityById(PuntoDiEmissione.class, idPunto);
-
-                if (puntoDiEmissione != null && puntoDiEmissione.isAttivo()) {
+                scelta = scanner.nextInt();
+                scanner.nextLine();
+                if (scelta >= 1 && scelta <= puntiAttivi.size()) {
+                    puntoDiEmissione = puntiAttivi.get(scelta - 1);
                     puntoValido = true;
                 } else {
-                    System.out.println("Punto di emissione non trovato o non attivo. Riprova.");
+                    System.out.println("Scelta non valida. Riprova.");
                 }
-            } catch (IllegalArgumentException e) {
-                System.out.println("ID non valido. Inserisci un UUID corretto.");
+            } catch (Exception e) {
+                System.out.println("Errore: inserisci un numero valido.");
+                scanner.nextLine();
             }
         }
 
@@ -63,21 +79,36 @@ public class SetBiglietto {
         }
 
         Mezzo mezzo = null;
+        List<Mezzo> mezziDisponibili = get.getAllEntities(Mezzo.class);
+
+        List<Mezzo> mezziInServizio = mezziDisponibili.stream()
+                .filter(m -> m.getStatoMezzo() == StatoMezzo.SERVIZIO)
+                .toList();
+
+        if (mezziInServizio.isEmpty()) {
+            System.out.println("Non ci sono mezzi attualmente in servizio.");
+            return;
+        }
+
+        System.out.println("Seleziona un mezzo in servizio:");
+        mezziInServizio.forEach(m -> System.out.println((mezziInServizio.indexOf(m) + 1) + ". " + m.getTipo_mezzo()));
+
+        int sceltaMezzo = -1;
         boolean mezzoValido = false;
-
         while (!mezzoValido) {
-            System.out.println("Inserisci l'ID del mezzo: ");
+            System.out.print("Inserisci il numero del mezzo: ");
             try {
-                String idMezzo = scanner.nextLine();
-                mezzo = get.getEntityById(Mezzo.class, idMezzo);
-
-                if (mezzo != null) {
+                sceltaMezzo = scanner.nextInt();
+                scanner.nextLine();
+                if (sceltaMezzo >= 1 && sceltaMezzo <= mezziInServizio.size()) {
+                    mezzo = mezziInServizio.get(sceltaMezzo - 1);
                     mezzoValido = true;
                 } else {
-                    System.out.println("Mezzo non trovato. Riprova.");
+                    System.out.println("Scelta non valida. Riprova.");
                 }
-            } catch (IllegalArgumentException e) {
-                System.out.println("ID non valido. Inserisci un UUID corretto.");
+            } catch (Exception e) {
+                System.out.println("Errore: inserisci un numero valido.");
+                scanner.nextLine();
             }
         }
 

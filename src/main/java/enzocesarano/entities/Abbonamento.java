@@ -29,8 +29,7 @@ public class Abbonamento {
     @JoinColumn(name = "id_tessera")
     private Tessera tessera;
 
-    public Abbonamento(boolean stato, LocalDate data_inizio, Utenti utenti, PuntoDiEmissione puntoDiEmissione, Tessera tessera, Periodicità periodicità) {
-        this.stato = stato;
+    public Abbonamento(LocalDate data_inizio, Utenti utenti, PuntoDiEmissione puntoDiEmissione, Tessera tessera, Periodicità periodicità) {
         this.data_inizio = data_inizio;
         this.utenti = utenti;
         this.puntoDiEmissione = puntoDiEmissione;
@@ -41,6 +40,8 @@ public class Abbonamento {
         } else if (this.periodicità == Periodicità.MENSILE) {
             data_fine = data_inizio.plusMonths(1);
         }
+
+        this.stato = this.data_fine.isAfter(LocalDate.now()) || this.data_fine.isEqual(LocalDate.now());
     }
 
     public Abbonamento() {

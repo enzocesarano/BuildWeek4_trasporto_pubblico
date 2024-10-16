@@ -2,7 +2,10 @@ package enzocesarano.dao;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.TypedQuery;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 public class DefaultDAO {
@@ -56,6 +59,22 @@ public class DefaultDAO {
                 t.rollback();
             }
             System.out.println("Errore durante l'eliminazione: " + e.getMessage());
+        }
+    }
+
+    public <T> List<T> getAllEntities(Class<T> entityClass) {
+        try {
+            String queryString = "SELECT e FROM " + entityClass.getSimpleName() + " e";
+            TypedQuery<T> query = entityManager.createQuery(queryString, entityClass);
+
+            List<T> resultList = query.getResultList();
+            if (resultList.isEmpty()) {
+                System.out.println("Nessuna entità trovata per la classe: " + entityClass.getSimpleName());
+            }
+            return resultList;
+        } catch (Exception e) {
+            System.out.println("Errore nella ricerca delle entità: " + e.getMessage());
+            return Collections.emptyList();
         }
     }
 

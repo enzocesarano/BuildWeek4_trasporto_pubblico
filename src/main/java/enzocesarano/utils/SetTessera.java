@@ -6,6 +6,7 @@ import enzocesarano.entities.Tessera;
 import enzocesarano.entities.Utenti;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Scanner;
 
 public class SetTessera {
@@ -15,19 +16,35 @@ public class SetTessera {
         boolean puntoValido = false;
 
         PuntoDiEmissione puntoDiEmissione = null;
-        while (!puntoValido) {
-            System.out.println("Inserisci l'ID del punto di emissione: ");
-            try {
-                String idPunto = scanner.nextLine();
-                puntoDiEmissione = get.getEntityById(PuntoDiEmissione.class, idPunto);
+        List<PuntoDiEmissione> puntiDiEmissione = get.getAllEntities(PuntoDiEmissione.class);
 
-                if (puntoDiEmissione != null && puntoDiEmissione.isAttivo()) {
+        List<PuntoDiEmissione> puntiAttivi = puntiDiEmissione.stream()
+                .filter(PuntoDiEmissione::isAttivo)
+                .toList();
+
+        if (puntiAttivi.isEmpty()) {
+            System.out.println("Non ci sono punti di emissione attivi disponibili.");
+            return;
+        }
+
+        System.out.println("Seleziona un punto di emissione:");
+        puntiAttivi.forEach(p -> System.out.println((puntiAttivi.indexOf(p) + 1) + ". " + p.getNome_punto()));
+
+        int scelta = -1;
+        while (!puntoValido) {
+            System.out.print("Inserisci il numero del punto di emissione: ");
+            try {
+                scelta = scanner.nextInt();
+                scanner.nextLine();
+                if (scelta >= 1 && scelta <= puntiAttivi.size()) {
+                    puntoDiEmissione = puntiAttivi.get(scelta - 1);
                     puntoValido = true;
                 } else {
-                    System.out.println("Punto di emissione non trovato o non attivo. Riprova.");
+                    System.out.println("Scelta non valida. Riprova.");
                 }
-            } catch (IllegalArgumentException e) {
-                System.out.println("ID non valido. Inserisci un UUID corretto.");
+            } catch (Exception e) {
+                System.out.println("Errore: inserisci un numero valido.");
+                scanner.nextLine();
             }
         }
 
