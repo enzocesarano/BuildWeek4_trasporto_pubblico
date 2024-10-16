@@ -2,6 +2,7 @@ package enzocesarano.dao;
 
 import enzocesarano.entities.Biglietto;
 import enzocesarano.entities.PuntoDiEmissione;
+import exceptions.BigliettoNotFoundException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 
@@ -24,12 +25,7 @@ public class BigliettoDAO extends DefaultDAO {
         List<Biglietto> biglietti = query.getResultList();
 
         if (biglietti.isEmpty()) {
-            System.out.println("Non ci sono biglietti per questo periodo!");
-        } else {
-            System.out.println("I biglietti trovati per questo periodo: ");
-            for (Biglietto biglietto : biglietti) {
-                System.out.println(biglietto);
-            }
+            throw new BigliettoNotFoundException("Non ci sono biglietti per questo periodo!");
         }
 
         return biglietti;
@@ -45,12 +41,7 @@ public class BigliettoDAO extends DefaultDAO {
 
         List<Biglietto> biglietti = query.getResultList();
         if (biglietti.isEmpty()) {
-            System.out.println("Non ci sono biglietti per questo periodo!");
-        } else {
-            System.out.println("I biglietti trovati per questo periodo e punto di emissione: ");
-            for (Biglietto biglietto : biglietti) {
-                System.out.println(biglietto);
-            }
+            throw new BigliettoNotFoundException("Non ci sono biglietti per questo periodo e punto di emissione!");
         }
         return biglietti;
     }
@@ -80,13 +71,13 @@ public class BigliettoDAO extends DefaultDAO {
         countQueryPEmissione.setParameter("inizio", inizio);
         countQueryPEmissione.setParameter("fine", fine);
         long totaleBigliettiPEm = countQueryPEmissione.getSingleResult();
+
         if (totaleBigliettiPEm == 0) {
-            System.out.println("Il totale dei biglietti per il " + puntoDiEmissione.getNome_punto() + " è zero.");
-        } else {
-            System.out.println("Il totale dei biglietti emessi dal " + puntoDiEmissione.getNome_punto() + " è: " + totaleBigliettiPEm);
+            throw new BigliettoNotFoundException("Il totale dei biglietti per il " + puntoDiEmissione.getNome_punto() + " è zero.");
         }
         return totaleBigliettiPEm;
 
 
     }
 }
+

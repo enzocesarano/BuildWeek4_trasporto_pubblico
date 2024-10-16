@@ -1,15 +1,12 @@
 package enzocesarano;
 
 import enzocesarano.dao.DefaultDAO;
-import enzocesarano.entities.Utenti;
-import enzocesarano.utils.SetAbbonamento;
-import enzocesarano.utils.SetBiglietto;
-import enzocesarano.utils.SetTessera;
+import enzocesarano.dao.ManutenzioneDAO;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
-import java.util.Scanner;
+import java.util.UUID;
 
 public class Application {
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("trasporto_pubblico");
@@ -17,8 +14,9 @@ public class Application {
     public static void main(String[] args) throws Exception {
         EntityManager em = emf.createEntityManager();
         DefaultDAO dd = new DefaultDAO(em);
+        ManutenzioneDAO md = new ManutenzioneDAO(em);
 
-        Scanner scanner = new Scanner(System.in);
+       /* Scanner scanner = new Scanner(System.in);
         boolean exit = false;
 
         while (!exit) {
@@ -95,8 +93,18 @@ public class Application {
                     break;
             }
 
-            em.close();
-            emf.close();
-        }
+            */
+
+        //
+
+
+        UUID idMezzo = UUID.fromString("da5af318-aeb5-40d0-8385-7d6f252bdbff");
+        String result = md.calcolaDurataTipoMotivoManutenzione(idMezzo);
+        System.out.println(result);
+
+
+        em.close();
+        emf.close();
+        // }
     }
 }
