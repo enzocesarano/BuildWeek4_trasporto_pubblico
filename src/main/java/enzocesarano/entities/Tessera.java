@@ -32,7 +32,6 @@ public class Tessera {
     public Tessera() {
     }
 
-
     // rinnovo tessera
     public boolean isValida() {
         return data_scadenza.isAfter(LocalDate.now());
@@ -78,10 +77,9 @@ public class Tessera {
     @Override
     public String toString() {
         return "Tessera{" +
-                "utenti=" + utenti.getNome() +
-                ", data_scadenza=" + data_scadenza +
+                "id_tessera=" + id_tessera +
                 ", data_aquisto=" + data_aquisto +
-                ", id_tessera=" + id_tessera +
+                ", data_scadenza=" + data_scadenza +
                 '}';
     }
 }

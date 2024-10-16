@@ -58,4 +58,14 @@ public class ValidazioneBiglietto {
     public void setDataValidazione(LocalDate dataValidazione) {
         this.dataValidazione = dataValidazione;
     }
+
+    @Override
+    public String toString() {
+        return "ValidazioneBiglietto{" +
+                "idValidazioneBiglietto=" + idValidazioneBiglietto +
+                ", biglietto=" + biglietto.getId_biglietto() +
+                ", mezzo=" + mezzo.getTipo_mezzo() +
+                ", dataValidazione=" + dataValidazione +
+                '}';
+    }
 }
