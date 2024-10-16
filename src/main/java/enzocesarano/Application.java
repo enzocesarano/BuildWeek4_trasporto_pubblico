@@ -2,11 +2,17 @@ package enzocesarano;
 
 import enzocesarano.dao.DefaultDAO;
 import enzocesarano.dao.ManutenzioneDAO;
+import enzocesarano.entities.ENUM.TipoUtente;
+import enzocesarano.entities.Utenti;
+import enzocesarano.utils.SetAbbonamento;
+import enzocesarano.utils.SetBiglietto;
+import enzocesarano.utils.SetManutenzione;
+import enzocesarano.utils.SetTessera;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
-import java.util.UUID;
+import java.util.Scanner;
 
 public class Application {
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("trasporto_pubblico");
@@ -16,7 +22,7 @@ public class Application {
         DefaultDAO dd = new DefaultDAO(em);
         ManutenzioneDAO md = new ManutenzioneDAO(em);
 
-       /* Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
         boolean exit = false;
 
         while (!exit) {
@@ -79,32 +85,59 @@ public class Application {
                     }
                     break;
                 case 2:
-                    System.out.println("sono il caso 2");
+                    // Admin
+                    System.out.println("Accesso Admin");
+                    System.out.println("Inserisci il tuo ID admin:");
+                    String adminUtenteId = scanner.nextLine();
+
+                    try {
+                        Utenti adminUtente = dd.getEntityById(Utenti.class, adminUtenteId);
+
+
+                        if (adminUtente != null && adminUtente.getTipoUtente() == TipoUtente.ADMIN) {
+                            SetManutenzione.tracciaManutenzione(scanner, md, true);
+                        } else {
+                            System.out.println("Accesso negato! Solo per utenti autorizzati.");
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Errore! Utente non trovato.");
+                    }
                     break;
+
                 case 3:
                     System.out.println("sono il caso 3");
                     break;
+
                 case 0:
                     exit = true;
                     System.out.println("Uscita dalle opzioni.");
                     break;
+
                 default:
                     System.out.println("Opzione non valida.");
                     break;
             }
-
-            */
-
-        //
+        }
 
 
+
+
+
+/*
         UUID idMezzo = UUID.fromString("da5af318-aeb5-40d0-8385-7d6f252bdbff");
         String result = md.calcolaDurataTipoMotivoManutenzione(idMezzo);
         System.out.println(result);
 
 
+        UUID idMezzo = UUID.fromString("070e541d-b325-4db2-bc9e-e629cb61622e");
+        LocalDate startDate = LocalDate.of(2023, 1, 1);
+        LocalDate endDate = LocalDate.of(2023, 12, 31);
+
+        String risultato = md.calcolaNumeroManutenzioniInPeriodo(idMezzo, startDate, endDate);
+        System.out.println(risultato);
+*/
         em.close();
         emf.close();
-        // }
     }
 }
+

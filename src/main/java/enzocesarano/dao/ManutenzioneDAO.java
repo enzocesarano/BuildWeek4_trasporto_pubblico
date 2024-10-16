@@ -6,6 +6,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.Query;
 
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.UUID;
@@ -51,6 +52,36 @@ public class ManutenzioneDAO {
             return "Errore: Nessun mezzo trovato con ID " + idMezzo;
         } catch (Exception e) {
             return "Errore durante il calcolo della manutenzione: " + e.getMessage();
+        }
+    }
+
+    // Metodo che calcola quante volte un mezzo è andato in manutenzione in un determinato periodo
+
+    public String calcolaNumeroManutenzioniInPeriodo(UUID idMezzo, LocalDate dataInizio, LocalDate dataFine) {
+        try {
+
+            Query queryCount = entityManager.createQuery(
+                    "SELECT COUNT(m) FROM Manutenzione m " +
+                            "WHERE m.mezzo.id = :idMezzo " +
+                            "AND m.data_inizio >= :dataInizio " +
+                            "AND m.data_fine <= :dataFine"
+            );
+            queryCount.setParameter("idMezzo", idMezzo);
+            queryCount.setParameter("dataInizio", dataInizio);
+            queryCount.setParameter("dataFine", dataFine);
+
+            Long count = (Long) queryCount.getSingleResult();
+
+            if (count == 0) {
+                return "Nessuna manutenzione trovata per il mezzo con ID " + idMezzo + " nel periodo specificato.";
+            }
+
+            return "Il mezzo con ID " + idMezzo + " è andato in manutenzione " + count + " volta/e nel periodo dal " + dataInizio + " al " + dataFine + ".";
+
+        } catch (NoResultException e) {
+            return "Errore: Nessun mezzo trovato con ID " + idMezzo;
+        } catch (Exception e) {
+            return "Errore durante il calcolo: " + e.getMessage();
         }
     }
 }
