@@ -1,15 +1,20 @@
 package enzocesarano;
 
 import enzocesarano.dao.DefaultDAO;
+import enzocesarano.dao.TrattaMezziDAO;
+import enzocesarano.entities.Tratta;
 import enzocesarano.entities.Utenti;
 import enzocesarano.utils.SetAbbonamento;
 import enzocesarano.utils.SetBiglietto;
 import enzocesarano.utils.SetTessera;
+import enzocesarano.utils.SetTrattaMezzo;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
+import java.util.List;
 import java.util.Scanner;
+import java.util.UUID;
 
 public class Application {
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("trasporto_pubblico");
@@ -17,6 +22,7 @@ public class Application {
     public static void main(String[] args) throws Exception {
         EntityManager em = emf.createEntityManager();
         DefaultDAO dd = new DefaultDAO(em);
+        TrattaMezziDAO tmD = new TrattaMezziDAO(em);
 
         Scanner scanner = new Scanner(System.in);
         boolean exit = false;
@@ -47,6 +53,7 @@ public class Application {
                                 System.out.println("2. Convalida Biglietto");
                                 System.out.println("3. Acquista Tessera");
                                 System.out.println("4. Abbonamento");
+                                System.out.println("5. Visualizza Tratte Mezzo");
                                 System.out.println("0. Esci");
 
                                 int subScelta = scanner.nextInt();
@@ -64,6 +71,9 @@ public class Application {
                                         break;
                                     case 4:
                                         SetAbbonamento.AcquistaAbbonamento(scanner, dd, utente1);
+                                        break;
+                                    case 5:
+                                        SetTrattaMezzo.InserisciTrattaMezzo(scanner, dd, tmD);
                                         break;
                                     case 0:
                                         System.out.println("Uscita dal menu.");
@@ -98,5 +108,6 @@ public class Application {
             em.close();
             emf.close();
         }
+
     }
 }
