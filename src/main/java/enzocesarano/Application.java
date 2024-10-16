@@ -1,7 +1,8 @@
 package enzocesarano;
 
 import enzocesarano.dao.DefaultDAO;
-import enzocesarano.utils.utenti.SetUtente;
+import enzocesarano.utils.utenti.SetCreaUtente;
+import enzocesarano.utils.utenti.SetMenuUtente;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
@@ -29,13 +30,13 @@ public class Application {
 
             switch (scelta) {
                 case 1:
-                    SetUtente.gestisciUtente(scanner, dd);
+                    SetMenuUtente.gestisciUtente(scanner, dd);
                     break;
                 case 2:
                     System.out.println("sono il caso 2");
                     break;
                 case 3:
-                    System.out.println("sono il caso 3");
+                    SetCreaUtente.creaUtente(scanner, dd);
                     break;
                 case 0:
                     exit = true;
