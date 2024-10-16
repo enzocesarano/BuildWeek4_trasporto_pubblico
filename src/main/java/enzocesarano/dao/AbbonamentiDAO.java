@@ -15,9 +15,10 @@ public class AbbonamentiDAO {
         this.entityManager = entityManager;
 
     }
+
     public boolean AbbonamentoValido(UUID id) {
         Abbonamento abbonamento = entityManager.find(Abbonamento.class, id);
-        return (abbonamento != null) && abbonamento.isAbbValido();
+        return (abbonamento != null);
     }
 
     public long getAbbonamentoStats(LocalDate startDate, LocalDate endDate, PuntoDiEmissione puntoEmissione) {
@@ -30,7 +31,7 @@ public class AbbonamentiDAO {
         query.setParameter("endDate", endDate);
         query.setParameter("puntoEmissione", puntoEmissione);
 
-         return query.getSingleResult();
+        return query.getSingleResult();
     }
 
 
