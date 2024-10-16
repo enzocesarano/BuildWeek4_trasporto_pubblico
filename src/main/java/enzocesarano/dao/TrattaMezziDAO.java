@@ -7,9 +7,6 @@ import enzocesarano.entities.Tratta;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 
-
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -38,18 +35,6 @@ public class TrattaMezziDAO {
         return query.getResultList();
     }
 
-    public void registraPercorrenza(UUID idMezzo, UUID idTratta, LocalTime tempoEffettivo) {
-        Mezzo mezzo = entityManager.find(Mezzo.class, idMezzo);
-        Tratta tratta = entityManager.find(Tratta.class, idTratta);
-
-        if (mezzo != null && tratta != null) {
-            Percorrenza percorrenza = new Percorrenza(LocalDate.now(), tempoEffettivo, tratta, mezzo);
-
-            entityManager.getTransaction().begin();
-            entityManager.persist(percorrenza);
-            entityManager.getTransaction().commit();
-        }
-    }
 
     public int contaPercorrenze(UUID idMezzo, UUID idTratta) {
         TypedQuery<Long> query = entityManager.createQuery(
@@ -72,5 +57,23 @@ public class TrattaMezziDAO {
         query.setParameter("idTratta", idTratta);
         return query.getResultList();
     }
+
+
+    public double calcolaMediaPercorrenze(String trattaId) {
+        UUID id = UUID.fromString(trattaId);
+        TypedQuery<Long> query = entityManager.createQuery(
+                "SELECT SUM(EXTRACT(EPOCH FROM v.tempoEffettivo)) / 60 FROM Percorrenza v WHERE v.tratta.id_tratta = :id", Long.class);
+        query.setParameter("id", id);
+        Long totaleMinuti = query.getSingleResult();
+
+        TypedQuery<Long> countQuery = entityManager.createQuery(
+                "SELECT COUNT(v) FROM Percorrenza v WHERE v.tratta.id_tratta = :id", Long.class);
+        countQuery.setParameter("id", id);
+        Long conteggioPercorrenze = countQuery.getSingleResult();
+
+        return (double) (totaleMinuti / conteggioPercorrenze) / 60;
+    }
 }
+
+
 

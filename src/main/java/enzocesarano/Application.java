@@ -2,7 +2,6 @@ package enzocesarano;
 
 import enzocesarano.dao.DefaultDAO;
 import enzocesarano.dao.TrattaMezziDAO;
-import enzocesarano.entities.Tratta;
 import enzocesarano.entities.Utenti;
 import enzocesarano.utils.SetAbbonamento;
 import enzocesarano.utils.SetBiglietto;
@@ -12,9 +11,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
-import java.util.List;
 import java.util.Scanner;
-import java.util.UUID;
 
 public class Application {
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("trasporto_pubblico");
@@ -104,6 +101,20 @@ public class Application {
                     System.out.println("Opzione non valida.");
                     break;
             }
+
+
+//        Percorrenza percorrenza1 = dd.getEntityById(Percorrenza.class, "199e76ca-c36b-49ed-bbd3-5198dee2f4d9");
+//        Percorrenza percorrenza2 = dd.getEntityById(Percorrenza.class, "79e98328-8650-4c5a-9b51-c84fd807b787");
+//        Percorrenza percorrenza3 = dd.getEntityById(Percorrenza.class, "b555b081-7cc8-405e-82e0-9b970c5e3159");
+//        List<Percorrenza> percorrenze = new ArrayList<>();
+//        percorrenze.add(percorrenza1);
+//        percorrenze.add(percorrenza2);
+//        percorrenze.add(percorrenza3);
+//        Tratta trattaI = dd.getEntityById(Tratta.class, "f9ac7138-1f5d-4c3f-ba02-44372a298752");
+//        String trattaId = trattaI.getId_tratta().toString();
+//        double mediaPercorrenze = tmD.calcolaMediaPercorrenze(trattaId);
+//        System.out.println("La media delle percorrenze è di ore " + mediaPercorrenze + " minuti.");
+//        ;
 
             em.close();
             emf.close();
