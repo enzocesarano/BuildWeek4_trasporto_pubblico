@@ -63,4 +63,5 @@ public class Manutenzione {
     public void setMotivo(String motivo) {
         this.motivo = motivo;
     }
+
 }

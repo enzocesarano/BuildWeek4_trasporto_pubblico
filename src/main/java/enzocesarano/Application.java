@@ -1,12 +1,13 @@
 package enzocesarano;
 
 import enzocesarano.dao.DefaultDAO;
-import enzocesarano.dao.TrattaMezziDAO;
+import enzocesarano.dao.ManutenzioneDAO;
+import enzocesarano.entities.ENUM.TipoUtente;
 import enzocesarano.entities.Utenti;
 import enzocesarano.utils.SetAbbonamento;
 import enzocesarano.utils.SetBiglietto;
+import enzocesarano.utils.SetManutenzione;
 import enzocesarano.utils.SetTessera;
-import enzocesarano.utils.SetTrattaMezzo;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
@@ -19,7 +20,7 @@ public class Application {
     public static void main(String[] args) throws Exception {
         EntityManager em = emf.createEntityManager();
         DefaultDAO dd = new DefaultDAO(em);
-        TrattaMezziDAO tmD = new TrattaMezziDAO(em);
+        ManutenzioneDAO md = new ManutenzioneDAO(em);
 
         Scanner scanner = new Scanner(System.in);
         boolean exit = false;
@@ -50,7 +51,6 @@ public class Application {
                                 System.out.println("2. Convalida Biglietto");
                                 System.out.println("3. Acquista Tessera");
                                 System.out.println("4. Abbonamento");
-                                System.out.println("5. Visualizza Tratte Mezzo");
                                 System.out.println("0. Esci");
 
                                 int subScelta = scanner.nextInt();
@@ -69,9 +69,6 @@ public class Application {
                                     case 4:
                                         SetAbbonamento.AcquistaAbbonamento(scanner, dd, utente1);
                                         break;
-                                    case 5:
-                                        SetTrattaMezzo.InserisciTrattaMezzo(scanner, dd, tmD);
-                                        break;
                                     case 0:
                                         System.out.println("Uscita dal menu.");
                                         exit = true;
@@ -88,37 +85,59 @@ public class Application {
                     }
                     break;
                 case 2:
-                    System.out.println("sono il caso 2");
+                    // Admin
+                    System.out.println("Accesso Admin");
+                    System.out.println("Inserisci il tuo ID admin:");
+                    String adminUtenteId = scanner.nextLine();
+
+                    try {
+                        Utenti adminUtente = dd.getEntityById(Utenti.class, adminUtenteId);
+
+
+                        if (adminUtente != null && adminUtente.getTipoUtente() == TipoUtente.ADMIN) {
+                            SetManutenzione.tracciaManutenzione(scanner, md, true);
+                        } else {
+                            System.out.println("Accesso negato! Solo per utenti autorizzati.");
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Errore! Utente non trovato.");
+                    }
                     break;
+
                 case 3:
                     System.out.println("sono il caso 3");
                     break;
+
                 case 0:
                     exit = true;
                     System.out.println("Uscita dalle opzioni.");
                     break;
+
                 default:
                     System.out.println("Opzione non valida.");
                     break;
             }
-
-
-//        Percorrenza percorrenza1 = dd.getEntityById(Percorrenza.class, "199e76ca-c36b-49ed-bbd3-5198dee2f4d9");
-//        Percorrenza percorrenza2 = dd.getEntityById(Percorrenza.class, "79e98328-8650-4c5a-9b51-c84fd807b787");
-//        Percorrenza percorrenza3 = dd.getEntityById(Percorrenza.class, "b555b081-7cc8-405e-82e0-9b970c5e3159");
-//        List<Percorrenza> percorrenze = new ArrayList<>();
-//        percorrenze.add(percorrenza1);
-//        percorrenze.add(percorrenza2);
-//        percorrenze.add(percorrenza3);
-//        Tratta trattaI = dd.getEntityById(Tratta.class, "f9ac7138-1f5d-4c3f-ba02-44372a298752");
-//        String trattaId = trattaI.getId_tratta().toString();
-//        double mediaPercorrenze = tmD.calcolaMediaPercorrenze(trattaId);
-//        System.out.println("La media delle percorrenze è di ore " + mediaPercorrenze + " minuti.");
-//        ;
-
-            em.close();
-            emf.close();
         }
 
+
+
+
+
+/*
+        UUID idMezzo = UUID.fromString("da5af318-aeb5-40d0-8385-7d6f252bdbff");
+        String result = md.calcolaDurataTipoMotivoManutenzione(idMezzo);
+        System.out.println(result);
+
+
+        UUID idMezzo = UUID.fromString("070e541d-b325-4db2-bc9e-e629cb61622e");
+        LocalDate startDate = LocalDate.of(2023, 1, 1);
+        LocalDate endDate = LocalDate.of(2023, 12, 31);
+
+        String risultato = md.calcolaNumeroManutenzioniInPeriodo(idMezzo, startDate, endDate);
+        System.out.println(risultato);
+*/
+        em.close();
+        emf.close();
     }
 }
+
