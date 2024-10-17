@@ -3,6 +3,8 @@ package enzocesarano.dao;
 import enzocesarano.entities.ENUM.StatoMezzo;
 import enzocesarano.entities.ENUM.TipoMezzo;
 import enzocesarano.entities.Manutenzione;
+import exceptions.InvalidIDException;
+import exceptions.MezzoNotFoundException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.Query;
@@ -21,15 +23,14 @@ public class ManutenzioneDAO {
     }
 
     // Metodo che calcola la durata totale della manutenzione e restituisce il tipo di mezzo e il motivo della manutenzione
-    public String calcolaDurataTipoMotivoManutenzione(UUID idMezzo) {
+    public String calcolaDurataTipoMotivoManutenzione(UUID idMezzo) throws MezzoNotFoundException {
         try {
-
             Query querydati = entityManager.createQuery("SELECT m, m.mezzo.tipo_mezzo, m.motivo FROM Manutenzione m WHERE m.mezzo.id = :idMezzo");
             querydati.setParameter("idMezzo", idMezzo);
             List<Object[]> results = querydati.getResultList();
 
             if (results.isEmpty()) {
-                return "Nessun mezzo trovato con ID " + idMezzo;
+                throw new MezzoNotFoundException("Nessun mezzo trovato con ID " + idMezzo);
             }
 
             long totaleDurata = 0;  //nr. giorni
@@ -50,24 +51,23 @@ public class ManutenzioneDAO {
             return "Tipo mezzo: " + tipoMezzo + ", Motivo: " + motivoManutenzione + ", Durata totale manutenzione: " + totaleDurata + " giorni.";
 
         } catch (NoResultException e) {
-            return "Errore: Nessun mezzo trovato con ID " + idMezzo;
+            throw new MezzoNotFoundException("Errore: Nessun mezzo trovato con ID " + idMezzo);
         } catch (Exception e) {
             return "Errore durante il calcolo della manutenzione: " + e.getMessage();
         }
     }
 
-    // Metodo che calcola quante volte un mezzo è andato in manutenzione in un determinato periodo e restuisce anche lo stato
-
-    public String calcolaNumeroManutenzioniInPeriodo(UUID idMezzo, LocalDate dataInizio, LocalDate dataFine) {
+    // Metodo che calcola quante volte un mezzo è andato in manutenzione in un determinato periodo e restituisce anche lo stato
+    public String calcolaNumeroManutenzioniInPeriodo(UUID idMezzo, LocalDate dataInizio, LocalDate dataFine) throws MezzoNotFoundException {
         try {
 
             LocalDate today = LocalDate.now();
             if (dataInizio.isAfter(today) || dataFine.isAfter(today)) {
-                return "Errore: Le date inserite non possono essere future. Reinserisci un intervallo di date valido.";
+                throw new InvalidIDException("Errore: Le date inserite non possono essere future. Reinserisci un intervallo di date valido:");
             }
 
             if (dataInizio.isAfter(dataFine)) {
-                return "Errore: La data di inizio non può essere successiva alla data di fine.";
+                throw new InvalidIDException("Errore: La data di inizio non può essere successiva alla data di fine.");
             }
 
             Query queryCount = entityManager.createQuery(
@@ -82,6 +82,10 @@ public class ManutenzioneDAO {
 
             Long count = (Long) queryCount.getSingleResult();
 
+            if (count == 0) {
+                throw new MezzoNotFoundException("Nessuna manutenzione trovata per il mezzo con ID " + idMezzo + " nel periodo specificato.");
+            }
+
             // Lo stato del mezzo
             Query queryStato = entityManager.createQuery("SELECT m.statoMezzo FROM Mezzo m WHERE m.id_mezzo = :idMezzo");
             queryStato.setParameter("idMezzo", idMezzo);
@@ -91,16 +95,13 @@ public class ManutenzioneDAO {
                     ? "attualmente in servizio."
                     : "attualmente in manutenzione.";
 
-            if (count == 0) {
-                return "Nessuna manutenzione trovata per il mezzo con ID " + idMezzo + " nel periodo specificato. " +
-                        "Lo stato del mezzo è \" + statoMezzoDescrizione";
-            }
-
             return "Il mezzo con ID " + idMezzo + " è andato in manutenzione " + count + " volta/e nel periodo dal " + dataInizio + " al "
                     + dataFine + ". Lo stato del mezzo è " + statoMezzoDescrizione;
 
         } catch (NoResultException e) {
-            return "Errore: Nessun mezzo trovato con ID " + idMezzo;
+            throw new MezzoNotFoundException("Errore: Nessun mezzo trovato con ID " + idMezzo);
+        } catch (InvalidIDException e) {
+            return e.getMessage();
         } catch (Exception e) {
             return "Errore durante il calcolo: " + e.getMessage();
         }
