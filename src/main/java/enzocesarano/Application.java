@@ -118,24 +118,7 @@ public class Application {
                     break;
             }
         }
-
-
-
-
-
-/*
-        UUID idMezzo = UUID.fromString("da5af318-aeb5-40d0-8385-7d6f252bdbff");
-        String result = md.calcolaDurataTipoMotivoManutenzione(idMezzo);
-        System.out.println(result);
-
-
-        UUID idMezzo = UUID.fromString("070e541d-b325-4db2-bc9e-e629cb61622e");
-        LocalDate startDate = LocalDate.of(2023, 1, 1);
-        LocalDate endDate = LocalDate.of(2023, 12, 31);
-
-        String risultato = md.calcolaNumeroManutenzioniInPeriodo(idMezzo, startDate, endDate);
-        System.out.println(risultato);
-*/
+        
         em.close();
         emf.close();
     }
