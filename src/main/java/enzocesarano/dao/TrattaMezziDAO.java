@@ -29,7 +29,7 @@ public class TrattaMezziDAO {
             return Collections.emptyList();
         }
         TypedQuery<Tratta> query = entityManager.createQuery(" " +
-                "SELECT p.tratta FROM Percorrenza p WHERE" +
+                "SELECT p FROM Tratta p WHERE" +
                 " p.mezzo.id_mezzo = :idMezzo", Tratta.class);
         query.setParameter("idMezzo", idMezzo);
         return query.getResultList();

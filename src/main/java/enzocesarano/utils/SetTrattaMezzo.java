@@ -15,7 +15,7 @@ public class SetTrattaMezzo {
         List<Mezzo> mezziDisponibili = get.getAllEntities(Mezzo.class);
 
         System.out.println("Seleziona un mezzo :");
-        mezziDisponibili.forEach(m -> System.out.println((mezziDisponibili.indexOf(m) + 1) + ". " + m.getTipo_mezzo() + " - (" + m.getStatoMezzo().toString().toLowerCase() + ")"));
+        mezziDisponibili.forEach(m -> System.out.println((mezziDisponibili.indexOf(m) + 1) + ". " + m.getTipo_mezzo() + " - (" + m.getStatoMezzo().toString().toLowerCase() + ") - " + m.getId_mezzo()));
 
         int sceltaMezzo = -1;
         boolean mezzoValido = false;
@@ -47,10 +47,10 @@ public class SetTrattaMezzo {
             System.out.println("Nessuna tratta trovata per il mezzo con ID: " + mezzo.getId_mezzo());
         } else {
             for (Tratta tratta : tratte) {
-                System.out.println("ID Tratta: " + tratta.getId_tratta());
+                System.out.println("\nID Tratta: " + tratta.getId_tratta());
                 System.out.println("Zona Partenza: " + tratta.getZonaPartenza());
                 System.out.println("Capolinea: " + tratta.getCapolinea());
-                System.out.println("Tempo Previsto: " + tratta.getTempoPrevisto() + " minuti");
+                System.out.println("Tempo Previsto: " + tratta.getTempoPrevisto() + " minuti\n");
             }
         }
     }

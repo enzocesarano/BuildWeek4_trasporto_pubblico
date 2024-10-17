@@ -12,6 +12,7 @@ import jakarta.persistence.Persistence;
 
 import java.util.Scanner;
 
+
 public class Application {
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("trasporto_pubblico");
 
@@ -20,6 +21,7 @@ public class Application {
         DefaultDAO dd = new DefaultDAO(em);
         ManutenzioneDAO md = new ManutenzioneDAO(em);
         TrattaMezziDAO tmd = new TrattaMezziDAO(em);
+
 
         Scanner scanner = new Scanner(System.in);
         boolean exit = false;
@@ -40,7 +42,7 @@ public class Application {
                     break;
                 case 2:
                     // Admin
-                    SetAdmin.MenuAdmin(scanner, dd, md, true);
+                    SetAdmin.MenuAdmin(scanner, dd, md, true, tmd);
                     break;
 
                 case 3:

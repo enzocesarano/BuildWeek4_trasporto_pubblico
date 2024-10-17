@@ -23,11 +23,11 @@ public class Percorrenza {
     @JoinColumn(name = "id_mezzo")
     private Mezzo mezzo;
 
-    public Percorrenza(LocalDate data, LocalTime tempoEffettivo, Tratta tratta, Mezzo mezzo) {
+    public Percorrenza(LocalDate data, LocalTime tempoEffettivo, Tratta tratta) {
         this.data = data;
         this.tempoEffettivo = tempoEffettivo;
         this.tratta = tratta;
-        this.mezzo = mezzo;
+        this.mezzo = tratta.getMezzo();
     }
 
     public Percorrenza() {

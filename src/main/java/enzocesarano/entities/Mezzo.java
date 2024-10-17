@@ -22,6 +22,9 @@ public class Mezzo {
     @Enumerated(EnumType.STRING)
     private StatoMezzo statoMezzo;
 
+    @OneToOne(mappedBy = "mezzo")
+    private Tratta tratta;
+
     @OneToMany(mappedBy = "mezzo", cascade = CascadeType.ALL)
     private List<ValidazioneBiglietto> bigliettiValidi;
 
@@ -34,7 +37,7 @@ public class Mezzo {
     public Mezzo() {
     }
 
-    public Mezzo(TipoMezzo tipo_mezzo, StatoMezzo statoMezzo) {
+    public Mezzo(TipoMezzo tipo_mezzo, StatoMezzo statoMezzo, Tratta tratta) {
         this.tipo_mezzo = tipo_mezzo;
         if (this.tipo_mezzo == TipoMezzo.TRAM) {
             this.capienza = 100;
@@ -42,12 +45,20 @@ public class Mezzo {
             this.capienza = 50;
         }
         this.statoMezzo = statoMezzo;
+        this.tratta = tratta;
     }
 
     public UUID getId_mezzo() {
         return id_mezzo;
     }
 
+    public Tratta getTratta() {
+        return tratta;
+    }
+
+    public void setTratta(Tratta tratta) {
+        this.tratta = tratta;
+    }
 
     public TipoMezzo getTipo_mezzo() {
         return tipo_mezzo;

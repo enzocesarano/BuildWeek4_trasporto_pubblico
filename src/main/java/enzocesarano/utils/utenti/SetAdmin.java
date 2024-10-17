@@ -1,13 +1,11 @@
 package enzocesarano.utils.utenti;
 
-import enzocesarano.dao.DefaultDAO;
-import enzocesarano.dao.ManutenzioneDAO;
+import enzocesarano.dao.*;
 import enzocesarano.entities.ENUM.StatoMezzo;
 import enzocesarano.entities.ENUM.TipoUtente;
 import enzocesarano.entities.Mezzo;
 import enzocesarano.entities.Utenti;
-import enzocesarano.utils.SetManutenzioneMezzo;
-import enzocesarano.utils.SetMezzo;
+import enzocesarano.utils.*;
 import exceptions.InvalidIDException;
 import exceptions.MezzoNotFoundException;
 import jakarta.persistence.EntityManager;
@@ -19,8 +17,11 @@ import java.util.Scanner;
 
 public class SetAdmin {
 
-    public static void MenuAdmin(Scanner scanner, DefaultDAO dd, ManutenzioneDAO manutenzioneDAO, boolean isAdmin) {
+    public static void MenuAdmin(Scanner scanner, DefaultDAO dd, ManutenzioneDAO manutenzioneDAO, boolean isAdmin, TrattaMezziDAO tmd) {
         EntityManager em = dd.getEntityManager();
+        BigliettoDAO bd = new BigliettoDAO(em);
+        AbbonamentiDAO ad = new AbbonamentiDAO(em);
+
         Utenti utente1 = null;
         boolean idValido = false;
         while (!idValido) {
@@ -43,10 +44,10 @@ public class SetAdmin {
             System.out.println("Scegli una delle seguenti opzioni:");
             System.out.println("1. Crea Mezzo");
             System.out.println("2. Menu Manutenzione");
-            /*System.out.println("3. Acquista o rinnova Tessera");
-            System.out.println("4. Acquista o rinnova Abbonamento");
+            System.out.println("3. Menu Biglietti");
+            System.out.println("4. Visualizza Abbonamenti");
             System.out.println("5. Visualizza Tratta Mezzo");
-            System.out.println("9. Visualizza Profilo Admin");*/
+            System.out.println("9. Visualizza Profilo Admin");
             System.out.println("0. Esci");
             int subScelta = scanner.nextInt();
             scanner.nextLine();
@@ -181,13 +182,37 @@ public class SetAdmin {
                     }
                     break;
                 case 3:
+                    exit = false;
+                    while (!exit) {
+                        System.out.println("\nMenu Biglietti: ");
+                        System.out.println("1. Biglietti venduti per punto di emissione");
+                        System.out.println("2. Biglietti validati per mezzo");
+                        System.out.println("0. Vai al menu principale");
 
+                        int nrScelto = scanner.nextInt();
+                        scanner.nextLine();
+                        switch (nrScelto) {
+                            case 1:
+                                SetBigliettiVenduti.BigliettiVendutiPerPunto(dd, scanner, bd);
+                                break;
+                            case 2:
+                                SetBigliettiVenduti.BigliettiValidati(dd, scanner, bd);
+                                break;
+                            case 0:
+                                System.out.println("Sei uscito dal Menu Manutenzione!");
+                                exit = true;
+                                break;
+                            default:
+                                System.out.println("Numero inserito non valido! Riprova.");
+                        }
+                    }
                     break;
                 case 4:
-
+                    SetAbbonamento.AbbonamentiPerPunto(dd, scanner, ad);
                     break;
-                case 5:
 
+                case 5:
+                    SetTrattaMezzo.InserisciTrattaMezzo(scanner, dd, tmd);
                     break;
                 case 9:
                     em.refresh(utente1);
@@ -205,14 +230,13 @@ public class SetAdmin {
     }
 
     private static void cambiaStatoMezzo(Scanner scanner, DefaultDAO dd) {
-        EntityManager em = dd.getEntityManager();
         boolean idValido = false;
         while (!idValido) {
             Mezzo mezzo = null;
             List<Mezzo> mezziDisponibili = dd.getAllEntities(Mezzo.class);
 
             System.out.println("Seleziona un mezzo:");
-            mezziDisponibili.forEach(m -> System.out.println((mezziDisponibili.indexOf(m) + 1) + ". " + m.getTipo_mezzo()));
+            mezziDisponibili.forEach(m -> System.out.println((mezziDisponibili.indexOf(m) + 1) + ". " + m.getTipo_mezzo() + " - " + m.getId_mezzo()));
 
             int sceltaMezzo = -1;
             boolean mezzoValido = false;
@@ -234,12 +258,12 @@ public class SetAdmin {
             }
 
             try {
-                Mezzo mezzo1 = dd.getEntityById(Mezzo.class, mezzo.getId_mezzo().toString());  // Recupero il mezzo
+                Mezzo mezzo1 = mezzo;
 
-                if (mezzo == null) {
+                if (mezzo1 == null) {
                     throw new MezzoNotFoundException("Errore! Nessun mezzo trovato con questo ID!");
                 }
-                StatoMezzo statoAttualeMezzo = mezzo.getStatoMezzo();
+                StatoMezzo statoAttualeMezzo = mezzo1.getStatoMezzo(); // Usa mezzo1 qui
                 boolean sceltaValida = false;
 
                 while (!sceltaValida) {
@@ -252,9 +276,9 @@ public class SetAdmin {
                         scanner.nextLine();
 
                         if (scelta == 1) {
-                            mezzo.setStatoMezzo(StatoMezzo.MANUTENZIONE); // Aggiorno lo stato
-                            SetManutenzioneMezzo.SetManutenzione(scanner, dd, mezzo);
-                            dd.save(mezzo);
+                            mezzo1.setStatoMezzo(StatoMezzo.MANUTENZIONE); // Aggiorno lo stato
+                            SetManutenzioneMezzo.SetManutenzione(scanner, dd, mezzo1);
+                            dd.save(mezzo1);
                             System.out.println("Lo stato del mezzo è stato cambiato da SERVIZIO a MANUTENZIONE.");
                             sceltaValida = true;
                         } else if (scelta == 0) {
@@ -273,8 +297,8 @@ public class SetAdmin {
                         scanner.nextLine();
 
                         if (scelta == 1) {
-                            mezzo.setStatoMezzo(StatoMezzo.SERVIZIO);
-                            dd.save(mezzo);
+                            mezzo1.setStatoMezzo(StatoMezzo.SERVIZIO);
+                            dd.save(mezzo1);
                             System.out.println("Lo stato del mezzo è stato cambiato da MANUTENZIONE a SERVIZIO.");
                             sceltaValida = true;
                         } else if (scelta == 0) {
@@ -298,6 +322,7 @@ public class SetAdmin {
             }
         }
     }
+
 }
 
 

@@ -16,18 +16,29 @@ public class Tratta {
     private String zonaPartenza;
     private String capolinea;
     private int tempoPrevisto;
+    @OneToOne
+    @JoinColumn(name = "mezzo")
+    private Mezzo mezzo;
 
     @OneToMany(mappedBy = "tratta", cascade = CascadeType.ALL)
     private List<Percorrenza> percorrenze;
 
-
-    public Tratta(String zonaPartenza, String capolinea, int tempoPrevisto) {
+    public Tratta(String zonaPartenza, String capolinea, int tempoPrevisto, Mezzo mezzo) {
         this.zonaPartenza = zonaPartenza;
         this.capolinea = capolinea;
         this.tempoPrevisto = tempoPrevisto;
+        this.mezzo = mezzo;
     }
 
     public Tratta() {
+    }
+
+    public Mezzo getMezzo() {
+        return mezzo;
+    }
+
+    public void setMezzo(Mezzo mezzo) {
+        this.mezzo = mezzo;
     }
 
     public UUID getId_tratta() {
