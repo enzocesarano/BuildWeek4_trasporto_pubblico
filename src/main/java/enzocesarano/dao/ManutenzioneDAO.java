@@ -3,6 +3,7 @@ package enzocesarano.dao;
 import enzocesarano.entities.ENUM.StatoMezzo;
 import enzocesarano.entities.ENUM.TipoMezzo;
 import enzocesarano.entities.Manutenzione;
+import enzocesarano.entities.Mezzo;
 import exceptions.InvalidIDException;
 import exceptions.MezzoNotFoundException;
 import jakarta.persistence.EntityManager;
@@ -22,25 +23,57 @@ public class ManutenzioneDAO {
         this.entityManager = entityManager;
     }
 
+    public static void ManutenzioniPerMezzo(DefaultDAO dd, Mezzo mezzo) {
+        try {
+            List<Manutenzione> manutenzioni = dd.getAllEntities(Manutenzione.class);
+            List<Manutenzione> manutenzioniMezzo = manutenzioni.stream()
+                    .filter(m -> m.getMezzo().getId_mezzo().equals(mezzo.getId_mezzo()))
+                    .toList();
+
+            if (manutenzioniMezzo.isEmpty()) {
+                System.out.println("Non ci sono manutenzioni per il mezzo con ID: " + mezzo.getId_mezzo());
+            } else {
+                System.out.println("Manutenzioni per il mezzo " + mezzo.getTipo_mezzo() + " (ID: " + mezzo.getId_mezzo() + "):");
+
+                for (Manutenzione manutenzione : manutenzioniMezzo) {
+                    System.out.println("- Motivo: " + manutenzione.getMotivo());
+                    System.out.println("  Data inizio: " + manutenzione.getData_inizio());
+                    System.out.println("  Data fine: " + (manutenzione.getData_fine() != null ? manutenzione.getData_fine() : "Non terminata"));
+                    System.out.println("----------------------------------------");
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Errore durante il recupero delle manutenzioni: " + e.getMessage());
+        }
+    }
+
     // Metodo per calcola la durata totale della manutenzione e restituisce il tipo di mezzo e il motivo della manutenzione
     public String calcolaDurataTipoMotivoManutenzione(UUID idMezzo) throws MezzoNotFoundException {
         try {
+            Query queryMezzoEsiste = entityManager.createQuery("SELECT COUNT(m.id) FROM Mezzo m WHERE m.id = :idMezzo");
+            queryMezzoEsiste.setParameter("idMezzo", idMezzo);
+            long mezzoEsiste = (long) queryMezzoEsiste.getSingleResult();
+
+            if (mezzoEsiste == 0) {
+                throw new MezzoNotFoundException("Nessun mezzo trovato con ID " + idMezzo);
+            }
+
             Query querydati = entityManager.createQuery("SELECT m, m.mezzo.tipo_mezzo, m.motivo FROM Manutenzione m WHERE m.mezzo.id = :idMezzo");
             querydati.setParameter("idMezzo", idMezzo);
             List<Object[]> results = querydati.getResultList();
 
             if (results.isEmpty()) {
-                throw new MezzoNotFoundException("Nessun mezzo trovato con ID " + idMezzo);
+                return "Il mezzo con ID " + idMezzo + " non ha mai avuto manutenzioni.";
             }
 
-            long totaleDurata = 0;  //nr. giorni
+            long totaleDurata = 0;
             TipoMezzo tipoMezzo = null;
             String motivoManutenzione = "";
 
             for (Object[] result : results) {
-                Manutenzione manutenzione = (Manutenzione) result[0];  //oggetto
-                tipoMezzo = (TipoMezzo) result[1];  //tipo mezzo preso da enum
-                motivoManutenzione = (String) result[2];  //motivo
+                Manutenzione manutenzione = (Manutenzione) result[0];
+                tipoMezzo = (TipoMezzo) result[1];
+                motivoManutenzione = (String) result[2];
 
                 if (manutenzione.getData_inizio() != null && manutenzione.getData_fine() != null) {
                     long durataManutenzione = ChronoUnit.DAYS.between(manutenzione.getData_inizio(), manutenzione.getData_fine());

@@ -40,18 +40,8 @@ public class SetMezzo {
             }
         }
 
-        inputValido = false;
-        while (!inputValido) {
-            System.out.println("Inserisci la capienza del mezzo: ");
-            try {
-                capienza = scanner.nextInt();
-                inputValido = true;
-            } catch (IllegalArgumentException e) {
-                System.out.println("Inserisci un numero intero.");
-            }
-        }
 
-        Mezzo nuovoMezzo = new Mezzo(tipo_mezzo, capienza, statoMezzo);
+        Mezzo nuovoMezzo = new Mezzo(tipo_mezzo, statoMezzo);
         dd.save(nuovoMezzo);
         System.out.println("Nuovo utente creato con successo! " + nuovoMezzo.getTipo_mezzo() + " " + nuovoMezzo.getId_mezzo());
     }

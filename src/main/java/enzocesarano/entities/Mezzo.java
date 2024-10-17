@@ -34,9 +34,13 @@ public class Mezzo {
     public Mezzo() {
     }
 
-    public Mezzo(TipoMezzo tipo_mezzo, int capienza, StatoMezzo statoMezzo) {
+    public Mezzo(TipoMezzo tipo_mezzo, StatoMezzo statoMezzo) {
         this.tipo_mezzo = tipo_mezzo;
-        this.capienza = capienza;
+        if (this.tipo_mezzo == TipoMezzo.TRAM) {
+            this.capienza = 100;
+        } else if (this.tipo_mezzo == TipoMezzo.BUS) {
+            this.capienza = 50;
+        }
         this.statoMezzo = statoMezzo;
     }
 
