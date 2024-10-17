@@ -22,7 +22,7 @@ public class ManutenzioneDAO {
         this.entityManager = entityManager;
     }
 
-    // Metodo che calcola la durata totale della manutenzione e restituisce il tipo di mezzo e il motivo della manutenzione
+    // Metodo per calcola la durata totale della manutenzione e restituisce il tipo di mezzo e il motivo della manutenzione
     public String calcolaDurataTipoMotivoManutenzione(UUID idMezzo) throws MezzoNotFoundException {
         try {
             Query querydati = entityManager.createQuery("SELECT m, m.mezzo.tipo_mezzo, m.motivo FROM Manutenzione m WHERE m.mezzo.id = :idMezzo");
