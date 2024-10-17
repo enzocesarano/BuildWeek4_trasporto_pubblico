@@ -43,6 +43,6 @@ public class SetMezzo {
 
         Mezzo nuovoMezzo = new Mezzo(tipo_mezzo, statoMezzo);
         dd.save(nuovoMezzo);
-        System.out.println("Nuovo utente creato con successo! " + nuovoMezzo.getTipo_mezzo() + " " + nuovoMezzo.getId_mezzo());
+        System.out.println("Nuovo mezzo creato con successo! " + nuovoMezzo.getTipo_mezzo() + " " + nuovoMezzo.getId_mezzo());
     }
 }
