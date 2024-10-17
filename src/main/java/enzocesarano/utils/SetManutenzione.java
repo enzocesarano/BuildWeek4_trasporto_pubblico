@@ -1,6 +1,11 @@
 package enzocesarano.utils;
 
+import enzocesarano.dao.DefaultDAO;
 import enzocesarano.dao.ManutenzioneDAO;
+import enzocesarano.entities.ENUM.StatoMezzo;
+import enzocesarano.entities.Mezzo;
+import exceptions.InvalidIDException;
+import exceptions.MezzoNotFoundException;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
@@ -9,7 +14,7 @@ import java.util.UUID;
 
 public class SetManutenzione {
 
-    public static void tracciaManutenzione(Scanner scanner, ManutenzioneDAO manutenzioneDAO, boolean isAdmin) {
+    public static void tracciaManutenzione(Scanner scanner, DefaultDAO defaultDAO, ManutenzioneDAO manutenzioneDAO, boolean isAdmin) {
         try {
 
             if (!isAdmin) {
@@ -22,6 +27,7 @@ public class SetManutenzione {
                 System.out.println("\nMenu Manutenzione: ");
                 System.out.println("1. Visualizza dati manutenzione");
                 System.out.println("2. Calcola numero di manutenzioni in un periodo per un certo mezzo");
+                System.out.println("3. Cambia stato del mezzo");
                 System.out.println("0. Vai al menu principale");
 
                 int nrScelto = scanner.nextInt();
@@ -53,7 +59,7 @@ public class SetManutenzione {
                             UUID mezzoId = UUID.fromString(idMezzo);
                             idValido = true;
 
-                            //While per le date finche non vengono inserite correttamente
+                            // While per le date finche non vengono inserite correttamente
                             boolean dateValide = false;
                             while (!dateValide) {
                                 System.out.println("Inserisci la data di inizio (YYYY-MM-DD): ");
@@ -86,6 +92,9 @@ public class SetManutenzione {
                         }
                     }
 
+                } else if (nrScelto == 3) {
+                    cambiaStatoMezzo(scanner, defaultDAO); // Chiamo il metodo per cambiare stato del mezzo
+
                 } else if (nrScelto == 0) {
                     System.out.println("Sei uscito dal Menu Manutenzione!");
                     exit = true;
@@ -96,6 +105,77 @@ public class SetManutenzione {
 
         } catch (Exception e) {
             System.out.println("Errore durante la gestione della manutenzione: " + e.getMessage());
+        }
+    }
+
+    private static void cambiaStatoMezzo(Scanner scanner, DefaultDAO defaultDAO) {
+        boolean idValido = false;
+        while (!idValido) {
+            System.out.println("Inserisci l'ID del mezzo: ");
+            String idMezzo = scanner.nextLine();
+
+            try {
+                Mezzo mezzo = defaultDAO.getEntityById(Mezzo.class, idMezzo);  // Recupero il mezzo
+
+                if (mezzo == null) {
+                    throw new MezzoNotFoundException("Errore! Nessun mezzo trovato con questo ID!");
+                }
+                StatoMezzo statoAttualeMezzo = mezzo.getStatoMezzo();  // Recupero lo stato attuale
+                boolean sceltaValida = false;
+
+                while (!sceltaValida) {
+                    if (statoAttualeMezzo == StatoMezzo.SERVIZIO) {
+                        System.out.println("Lo stato attuale del mezzo è in SERVIZIO.");
+                        System.out.println("1. Cambia stato a MANUTENZIONE");
+                        System.out.println("0. Torna indietro");
+
+                        int scelta = scanner.nextInt();
+                        scanner.nextLine();
+
+                        if (scelta == 1) {
+                            mezzo.setStatoMezzo(StatoMezzo.MANUTENZIONE);  // Aggiorno lo stato
+                            defaultDAO.save(mezzo);
+                            System.out.println("Lo stato del mezzo è stato cambiato da SERVIZIO a MANUTENZIONE.");
+                            sceltaValida = true;
+                        } else if (scelta == 0) {
+                            System.out.println("Ritorno al menu precedente.");
+                            return;
+                        } else {
+                            System.out.println("Opzione non valida. Riprova!");
+                        }
+
+                    } else if (statoAttualeMezzo == StatoMezzo.MANUTENZIONE) {
+                        System.out.println("Lo stato attuale del mezzo è in MANUTENZIONE.");
+                        System.out.println("1. Cambia stato a SERVIZIO");
+                        System.out.println("0. Torna indietro");
+
+                        int scelta = scanner.nextInt();
+                        scanner.nextLine();
+
+                        if (scelta == 1) {
+                            mezzo.setStatoMezzo(StatoMezzo.SERVIZIO);
+                            defaultDAO.save(mezzo);
+                            System.out.println("Lo stato del mezzo è stato cambiato da MANUTENZIONE a SERVIZIO.");
+                            sceltaValida = true;
+                        } else if (scelta == 0) {
+                            System.out.println("Ritorno al menu precedente.");
+                            return;
+                        } else {
+                            System.out.println("Opzione non valida. Riprova!");
+                        }
+                    }
+                }
+
+                idValido = true;
+            } catch (IllegalArgumentException e) {
+                try {
+                    throw new InvalidIDException("Errore! ID del mezzo non valido: " + idMezzo);
+                } catch (InvalidIDException ex) {
+                    System.out.println(ex.getMessage());
+                }
+            } catch (MezzoNotFoundException e) {
+                System.out.println(e.getMessage());
+            }
         }
     }
 }

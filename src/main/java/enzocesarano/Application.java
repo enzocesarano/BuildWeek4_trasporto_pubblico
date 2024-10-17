@@ -50,7 +50,7 @@ public class Application {
 
 
                         if (adminUtente != null && adminUtente.getTipoUtente() == TipoUtente.ADMIN) {
-                            SetManutenzione.tracciaManutenzione(scanner, md, true);
+                            SetManutenzione.tracciaManutenzione(scanner, dd, md, true);
                         } else {
                             System.out.println("Accesso negato! Solo per utenti autorizzati.");
                         }
