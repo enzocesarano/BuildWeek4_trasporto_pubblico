@@ -15,6 +15,7 @@ public class Abbonamento {
     private boolean stato;
     private LocalDate data_inizio;
     private LocalDate data_fine;
+    @Enumerated(EnumType.STRING)
     private Periodicità periodicità;
 
     @ManyToOne
