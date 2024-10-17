@@ -78,6 +78,23 @@ public class DefaultDAO {
         }
     }
 
+    public <T> void update(T obj) {
+        EntityTransaction t = entityManager.getTransaction();
+        try {
+            t.begin();
+            if (!entityManager.contains(obj)) {
+                entityManager.merge(obj);
+            }
+            entityManager.flush();
+            t.commit();
+        } catch (Exception e) {
+            if (t.isActive()) {
+                t.rollback();
+            }
+            System.out.println("Errore durante l'aggiornamento: " + e.getMessage());
+        }
+    }
+
     public EntityManager getEntityManager() {
         return this.entityManager;
     }

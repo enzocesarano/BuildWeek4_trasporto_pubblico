@@ -26,7 +26,7 @@ public class Abbonamento {
     @JoinColumn(name = "id_punto_emissione")
     private PuntoDiEmissione puntoDiEmissione;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "id_tessera")
     private Tessera tessera;
 

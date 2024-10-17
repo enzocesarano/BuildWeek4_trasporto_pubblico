@@ -1,13 +1,15 @@
 package enzocesarano.utils.utenti;
 
 import enzocesarano.dao.DefaultDAO;
+import enzocesarano.entities.Abbonamento;
 import enzocesarano.entities.ENUM.TipoUtente;
+import enzocesarano.entities.Tessera;
 import enzocesarano.entities.Utenti;
 
 import java.time.LocalDate;
 import java.util.Scanner;
 
-public class SetCreaUtente {
+public class SetUtente {
 
     public static void creaUtente(Scanner scanner, DefaultDAO dd) {
         String nome = "";
@@ -87,6 +89,39 @@ public class SetCreaUtente {
         Utenti nuovoUtente = new Utenti(nome, cognome, data_di_nascita, tipoUtente);
         dd.save(nuovoUtente);
         System.out.println("Nuovo utente creato con successo! " + nuovoUtente.getNome() + " " + nuovoUtente.getCognome());
+    }
+
+
+    public static void VisualizzaProfilo(Utenti utente1) {
+        if (utente1 != null) {
+            System.out.println("\n---- Profilo Utente ----");
+            System.out.println("Nome: " + utente1.getNome());
+            System.out.println("Cognome: " + utente1.getCognome());
+            System.out.println("Data di Nascita: " + utente1.getData_di_nascita());
+
+            Tessera tessera = utente1.getTessera();
+            if (tessera != null) {
+                System.out.println("\n---- Tessera ----");
+                System.out.println("ID Tessera: " + tessera.getId_tessera());
+                System.out.println("Data di Acquisto: " + tessera.getData_aquisto());
+                System.out.println("Data di Scadenza: " + tessera.getData_scadenza());
+                System.out.println("Stato Tessera: " + (tessera.isStato() ? "Attiva" : "Scaduta"));
+
+                Abbonamento abbonamento = tessera.getAbbonamenti();
+                if (abbonamento != null) {
+                    System.out.println("\n---- Abbonamento ----");
+                    System.out.println("ID Abbonamento: " + abbonamento.getId_abbonamento());
+                    System.out.println("Data Inizio Abbonamento: " + abbonamento.getData_inizio());
+                    System.out.println("Data Fine Abbonamento: " + abbonamento.getData_fine());
+                    System.out.println("Periodicità: " + abbonamento.getPeriodicità());
+                    System.out.println("Stato Abbonamento: " + (abbonamento.isStato() ? "Attivo\n" : "Scaduto\n"));
+                } else {
+                    System.out.println("\nNessun abbonamento attivo o registrato.\n");
+                }
+            } else {
+                System.out.println("L'utente non ha una tessera associata.");
+            }
+        }
     }
 
 }

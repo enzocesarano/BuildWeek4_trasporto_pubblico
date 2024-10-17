@@ -52,4 +52,17 @@ public class SetTessera {
         get.save(nuovaTessera);
         System.out.println("Tessera " + nuovaTessera.getId_tessera() + " acquistata con successo!");
     }
+
+    public static void RinnovaTessera(Scanner scanner, DefaultDAO get, Utenti utente1) {
+        Tessera tessera = utente1.getTessera();
+
+        if (tessera != null && !tessera.isStato()) {
+            LocalDate nuovaDataScadenza = LocalDate.now().plusYears(1);
+            tessera.setData_scadenza(nuovaDataScadenza);
+            tessera.setStato(true);
+            get.update(tessera);
+            System.out.println("Tessera " + utente1.getTessera().getId_tessera() + " rinnovata con successo! Nuova data di scadenza: " + tessera.getData_scadenza());
+        }
+    }
+
 }

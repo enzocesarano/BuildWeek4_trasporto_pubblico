@@ -3,7 +3,6 @@ package enzocesarano.entities;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -14,33 +13,37 @@ public class Tessera {
     private UUID id_tessera;
     private LocalDate data_aquisto;
     private LocalDate data_scadenza;
+    private boolean stato;
 
     @OneToOne
     @JoinColumn(name = "id_utente")
     private Utenti utenti;
 
-    @OneToMany(mappedBy = "tessera", cascade = CascadeType.ALL)
-    private List<Abbonamento> abbonamenti;
+    @OneToOne(mappedBy = "tessera")
+    private Abbonamento abbonamenti;
 
-    public Tessera(LocalDate data_aquisto, Utenti utenti, List<Abbonamento> abbonamenti) {
+    public Tessera(LocalDate data_aquisto, Utenti utenti, Abbonamento abbonamenti) {
         this.data_aquisto = data_aquisto;
         this.data_scadenza = data_aquisto.plusYears(1);
         this.utenti = utenti;
         this.abbonamenti = abbonamenti;
+        this.stato = this.data_scadenza.isAfter(LocalDate.now()) || this.data_scadenza.isEqual(LocalDate.now());
     }
 
     public Tessera() {
-    }
-
-    // rinnovo tessera
-    public boolean isValida() {
-        return data_scadenza.isAfter(LocalDate.now());
     }
 
     public UUID getId_tessera() {
         return id_tessera;
     }
 
+    public boolean isStato() {
+        return stato;
+    }
+
+    public void setStato(boolean stato) {
+        this.stato = stato;
+    }
 
     public LocalDate getData_aquisto() {
         return data_aquisto;
@@ -66,11 +69,11 @@ public class Tessera {
         this.utenti = utenti;
     }
 
-    public List<Abbonamento> getAbbonamenti() {
+    public Abbonamento getAbbonamenti() {
         return abbonamenti;
     }
 
-    public void setAbbonamenti(List<Abbonamento> abbonamenti) {
+    public void setAbbonamenti(Abbonamento abbonamenti) {
         this.abbonamenti = abbonamenti;
     }
 
