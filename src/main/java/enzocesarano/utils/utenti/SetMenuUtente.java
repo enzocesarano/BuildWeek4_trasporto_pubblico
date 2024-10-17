@@ -1,17 +1,19 @@
 package enzocesarano.utils.utenti;
 
 import enzocesarano.dao.DefaultDAO;
+import enzocesarano.dao.TrattaMezziDAO;
 import enzocesarano.entities.ENUM.TipoUtente;
 import enzocesarano.entities.Utenti;
 import enzocesarano.utils.SetAbbonamento;
 import enzocesarano.utils.SetBiglietto;
 import enzocesarano.utils.SetTessera;
+import enzocesarano.utils.SetTrattaMezzo;
 import jakarta.persistence.EntityManager;
 
 import java.util.Scanner;
 
 public class SetMenuUtente {
-    public static void gestisciUtente(Scanner scanner, DefaultDAO dd) {
+    public static void gestisciUtente(Scanner scanner, DefaultDAO dd, TrattaMezziDAO tmd) {
         EntityManager em = dd.getEntityManager();
         Utenti utente1 = null;
         boolean idValido = false;
@@ -30,7 +32,6 @@ public class SetMenuUtente {
                 System.out.println("ID non valido. Assicurati di inserire un ID valido.");
             }
         }
-
         boolean exitUtente = false;
         while (!exitUtente) {
             System.out.println("Scegli una delle seguenti opzioni:");
@@ -38,11 +39,10 @@ public class SetMenuUtente {
             System.out.println("2. Convalida Biglietto");
             System.out.println("3. Acquista Tessera");
             System.out.println("4. Abbonamento");
+            System.out.println("5. Visualizza Tratta Mezzo");
             System.out.println("0. Esci");
-
             int subScelta = scanner.nextInt();
             scanner.nextLine();
-
             switch (subScelta) {
                 case 1:
                     SetBiglietto.AcquistaBiglietto(scanner, dd);
@@ -60,13 +60,16 @@ public class SetMenuUtente {
                     break;
                 case 4:
                     em.refresh(utente1);
-                    if (utente1.getTessera() != null && utente1.getTessera().getAbbonamenti().isEmpty()) { // lista abbonamenti vuota?
+                    if (utente1.getTessera() != null && utente1.getTessera().getAbbonamenti().isEmpty()) {
                         SetAbbonamento.AcquistaAbbonamento(scanner, dd, utente1);
                     } else if (utente1.getTessera() == null) {
                         System.out.println("Non hai una tessera. Acquista una tessera prima di fare l'abbonamento.");
                     } else if (!utente1.getTessera().getAbbonamenti().isEmpty()) {
                         System.out.println("Hai già un abbonamento.");
                     }
+                    break;
+                case 5:
+                    SetTrattaMezzo.InserisciTrattaMezzo(scanner, dd, tmd);
                     break;
                 case 0:
                     exitUtente = true;
