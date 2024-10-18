@@ -57,11 +57,12 @@ Gli utenti normali hanno accesso a un menu che permette loro di:
 ## **Menu Amministratore**
 Gli utenti Admin possono:
 1. Creare e gestire i mezzi (tram e bus)
-2. Visualizzare e gestire le manutenzioni
-3. Monitorare i biglietti venduti e validati
-4. Visualizzare le tratte associate ai mezzi
-5. Calcolare statistiche sui tempi di percorrenza
-6. Visualizzare il proprio profilo
+2. Creare e cancellare tratte
+3. Visualizzare e gestire le manutenzioni
+4. Monitorare i biglietti venduti e validati
+5. Visualizzare le tratte associate ai mezzi
+6. Calcolare statistiche sui tempi di percorrenza
+7. Visualizzare il proprio profilo
 
 ---
 
