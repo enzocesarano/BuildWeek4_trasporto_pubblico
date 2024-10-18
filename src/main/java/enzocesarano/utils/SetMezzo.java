@@ -98,15 +98,15 @@ public class SetMezzo {
         List<Mezzo> mezziDisponibili = dd.getAllEntities(Mezzo.class);
 
         List<Mezzo> mezziSenzaTratta = mezziDisponibili.stream()
-                .filter(m -> m.getTratta() == null)
+                .filter(m -> m.getTratta() == null && m.getStatoMezzo() == StatoMezzo.SERVIZIO)
                 .toList();
 
         if (mezziSenzaTratta.isEmpty()) {
-            System.out.println("Non ci sono mezzi senza Tratta.");
+            System.out.println("Non ci sono mezzi in servizio senza Tratta.");
             return;
         }
 
-        System.out.println("Seleziona un mezzo senza Tratta:");
+        System.out.println("Seleziona un mezzo in servizio senza Tratta:");
         mezziSenzaTratta.forEach(m -> System.out.println((mezziSenzaTratta.indexOf(m) + 1) + ". " + m.getTipo_mezzo() + " - (" + m.getId_mezzo() + ")"));
 
         int sceltaMezzo = -1;
