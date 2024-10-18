@@ -143,7 +143,7 @@ public class SetAbbonamento {
             abbonamento.setStato(abbonamento.getData_fine().isAfter(LocalDate.now()) || abbonamento.getData_fine().isEqual(LocalDate.now()));
             get.update(abbonamento);
 
-            System.out.println("L'abbonamento è stato rinnovato con successo!");
+            System.out.println("L'abbonamento è stato rinnovato con successo! La nuova data di scadenza è: " + abbonamento.getData_fine());
         }
     }
 

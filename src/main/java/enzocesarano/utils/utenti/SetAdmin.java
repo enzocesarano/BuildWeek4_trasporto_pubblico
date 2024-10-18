@@ -43,23 +43,23 @@ public class SetAdmin {
         boolean exitUtente = false;
         while (!exitUtente) {
             System.out.println("Scegli una delle seguenti opzioni:");
-            System.out.println("1. Crea Mezzo");
-            System.out.println("2. Menu Manutenzione");
-            System.out.println("3. Menu Biglietti");
-            System.out.println("4. Visualizza Abbonamenti");
-            System.out.println("5. Visualizza Tratta Mezzo");
-            System.out.println("6. Menu Percorrenza");
-            System.out.println("7. Crea Tratta");
-            System.out.println("8. Assegna Tratta");
+            System.out.println("1. Menu Mezzo");
+            System.out.println("2. Menu Percorrenza");
+            System.out.println("3. Menu Manutenzioni");
+            System.out.println("4. Menu Biglietti");
+            System.out.println("5. Visualizza Abbonamenti");
             System.out.println("9. Visualizza Profilo Admin");
             System.out.println("0. Esci");
             int subScelta = scanner.nextInt();
             scanner.nextLine();
             switch (subScelta) {
                 case 1:
-                    SetMezzo.CreaMezzo(scanner, dd);
+                    SetMenuMezzo.MenuMezzo(scanner, dd, tmd);
                     break;
                 case 2:
+                    SetMenuPercorrenza.MenuPercorrenza(scanner, dd, pd);
+                    break;
+                case 3:
                     boolean exit = false;
                     while (!exit) {
                         System.out.println("\nMenu Manutenzione: ");
@@ -78,7 +78,10 @@ public class SetAdmin {
                                 List<Mezzo> mezziDisponibili = dd.getAllEntities(Mezzo.class);
 
                                 System.out.println("Seleziona un mezzo:");
-                                mezziDisponibili.forEach(m -> System.out.println((mezziDisponibili.indexOf(m) + 1) + ". " + m.getTipo_mezzo() + " - " + m.getId_mezzo()));
+                                for (Mezzo m : mezziDisponibili) {
+                                    Long numeroManutenzioni = manutenzioneDAO.calcolaNumeroManutenzioniPerMezzo(m.getId_mezzo());
+                                    System.out.println((mezziDisponibili.indexOf(m) + 1) + ". " + m.getTipo_mezzo() + " - (" + m.getId_mezzo() + ") - Numero di manutenzioni: " + numeroManutenzioni);
+                                }
 
                                 int sceltaMezzo = -1;
                                 boolean mezzoValido = false;
@@ -185,7 +188,7 @@ public class SetAdmin {
                         }
                     }
                     break;
-                case 3:
+                case 4:
                     exit = false;
                     while (!exit) {
                         System.out.println("\nMenu Biglietti: ");
@@ -211,21 +214,8 @@ public class SetAdmin {
                         }
                     }
                     break;
-                case 4:
-                    SetAbbonamento.AbbonamentiPerPunto(dd, scanner, ad);
-                    break;
-
                 case 5:
-                    SetTrattaMezzo.InserisciTrattaMezzo(scanner, dd, tmd);
-                    break;
-                case 6:
-                    SetMenuPercorrenza.MenuPercorrenza(scanner, dd, pd);
-                    break;
-                case 7:
-                    SetTrattaMezzo.CreaTratta(scanner, dd);
-                    break;
-                case 8:
-                    SetMezzo.assegnaTratta(scanner, dd);
+                    SetAbbonamento.AbbonamentiPerPunto(dd, scanner, ad);
                     break;
                 case 9:
                     em.refresh(utente1);
@@ -249,7 +239,7 @@ public class SetAdmin {
             List<Mezzo> mezziDisponibili = dd.getAllEntities(Mezzo.class);
 
             System.out.println("Seleziona un mezzo:");
-            mezziDisponibili.forEach(m -> System.out.println((mezziDisponibili.indexOf(m) + 1) + ". " + m.getTipo_mezzo() + " - " + m.getId_mezzo()));
+            mezziDisponibili.forEach(m -> System.out.println((mezziDisponibili.indexOf(m) + 1) + ". " + m.getTipo_mezzo() + " - " + m.getId_mezzo() + " - " + m.getStatoMezzo()));
 
             int sceltaMezzo = -1;
             boolean mezzoValido = false;

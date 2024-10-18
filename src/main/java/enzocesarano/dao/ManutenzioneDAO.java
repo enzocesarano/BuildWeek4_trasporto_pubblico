@@ -139,4 +139,17 @@ public class ManutenzioneDAO {
             return "Errore durante il calcolo: " + e.getMessage();
         }
     }
+
+    public Long calcolaNumeroManutenzioniPerMezzo(UUID idMezzo) {
+
+        try {
+            Query queryCount = entityManager.createQuery(
+                    "SELECT COUNT(m) FROM Manutenzione m WHERE m.mezzo.id = :idMezzo"
+            );
+            queryCount.setParameter("idMezzo", idMezzo);
+            return (Long) queryCount.getSingleResult();
+        } catch (Exception e) {
+            throw new RuntimeException("Errore durante il recupero del numero di manutenzioni per il mezzo con ID " + idMezzo, e);
+        }
+    }
 }

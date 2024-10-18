@@ -5,6 +5,7 @@ import enzocesarano.entities.ENUM.StatoMezzo;
 import enzocesarano.entities.ENUM.TipoMezzo;
 import enzocesarano.entities.Mezzo;
 import enzocesarano.entities.Tratta;
+import jakarta.persistence.EntityManager;
 
 import java.util.List;
 import java.util.Scanner;
@@ -45,10 +46,17 @@ public class SetMezzo {
         boolean puntoValido = false;
         Tratta tratta = null;
         List<Tratta> tratte = dd.getAllEntities(Tratta.class);
+        List<Tratta> tratteNonAssegnate = tratte.stream()
+                .filter(m -> m.getMezzo() == null).toList();
+
+        if (tratteNonAssegnate.isEmpty()) {
+            System.out.println("Non ci sono tratte non assegnate.");
+            return;
+        }
 
         System.out.println("Seleziona una tratta (oppure digita '0' per Nessuna):");
         System.out.println("0. Nessuna");
-        tratte.forEach(p -> System.out.println((tratte.indexOf(p) + 1) + ". " + p.getZonaPartenza() + " - " + p.getCapolinea()));
+        tratteNonAssegnate.forEach(p -> System.out.println((tratteNonAssegnate.indexOf(p) + 1) + ". " + p.getZonaPartenza() + " - " + p.getCapolinea()));
 
         int scelta = -1;
         while (!puntoValido) {
@@ -58,8 +66,8 @@ public class SetMezzo {
                 if (scelta == 0) {
                     tratta = null;
                     puntoValido = true;
-                } else if (scelta >= 1 && scelta <= tratte.size()) {
-                    tratta = tratte.get(scelta - 1);
+                } else if (scelta >= 1 && scelta <= tratteNonAssegnate.size()) {
+                    tratta = tratteNonAssegnate.get(scelta - 1);
                     puntoValido = true;
                 } else {
                     System.out.println("Scelta non valida. Riprova.");
@@ -85,6 +93,7 @@ public class SetMezzo {
     }
 
     public static void assegnaTratta(Scanner scanner, DefaultDAO dd) {
+        EntityManager em = dd.getEntityManager();
         Mezzo mezzo = null;
         List<Mezzo> mezziDisponibili = dd.getAllEntities(Mezzo.class);
 
@@ -121,6 +130,7 @@ public class SetMezzo {
 
         Tratta tratta = null;
         List<Tratta> tratte = dd.getAllEntities(Tratta.class);
+
         List<Tratta> tratteNonAssegnate = tratte.stream()
                 .filter(m -> m.getMezzo() == null).toList();
 
@@ -139,7 +149,7 @@ public class SetMezzo {
             try {
                 sceltaTratta = scanner.nextInt();
                 scanner.nextLine();
-                if (sceltaTratta >= 1 && sceltaTratta <= mezziSenzaTratta.size()) {
+                if (sceltaTratta >= 1 && sceltaTratta <= tratteNonAssegnate.size()) {
                     tratta = tratteNonAssegnate.get(sceltaTratta - 1);
                     trattaValida = true;
                 } else {

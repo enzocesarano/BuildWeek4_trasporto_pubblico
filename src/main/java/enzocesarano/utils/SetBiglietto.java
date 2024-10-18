@@ -91,7 +91,7 @@ public class SetBiglietto {
         }
 
         System.out.println("Seleziona un mezzo in servizio:");
-        mezziInServizio.forEach(m -> System.out.println((mezziInServizio.indexOf(m) + 1) + ". " + m.getTipo_mezzo()));
+        mezziInServizio.forEach(m -> System.out.println((mezziInServizio.indexOf(m) + 1) + ". " + m.getTipo_mezzo() + " - Tratta: " + m.getTratta().getZonaPartenza() + " - " + m.getTratta().getCapolinea()));
 
         int sceltaMezzo = -1;
         boolean mezzoValido = false;
