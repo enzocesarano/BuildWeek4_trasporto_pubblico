@@ -203,9 +203,9 @@ public class SetAbbonamento {
             if (abbonamenti.isEmpty()) {
                 System.out.println("\nNon ci sono abbonamenti venduti per il punto di emissione tra " + dataInizio + " e " + dataFine + "\n");
             } else {
-                System.out.println("\nAbbonamenti dal " + dataInizio + " al " + dataFine + " presso " + puntoDiEmissione.getNome_punto() + ":\n");
+                System.out.println("\nAbbonamenti dal " + dataInizio + " al " + dataFine + " presso " + puntoDiEmissione.getNome_punto() + ":");
                 abbonamenti.forEach(b -> {
-                    System.out.println("\n- Abbonamento ID: " + b.getId_abbonamento() + ", Data emissione: " + b.getData_inizio() + " - " + b.getPeriodicità() + "\n");
+                    System.out.println("- Abbonamento ID: " + b.getId_abbonamento() + ", Data emissione: " + b.getData_inizio() + " - " + b.getPeriodicità());
                 });
             }
         } catch (BigliettoNotFoundException e) {

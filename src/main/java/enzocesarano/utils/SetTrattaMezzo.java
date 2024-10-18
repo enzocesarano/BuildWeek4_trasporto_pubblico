@@ -81,7 +81,7 @@ public class SetTrattaMezzo {
 
         while (!input) {
             try {
-                System.out.print("\nInserisci il capolinea: ");
+                System.out.print("Inserisci il capolinea: ");
                 capolinea = scanner.nextLine();
                 if (capolinea.trim().isEmpty()) {
                     throw new IllegalArgumentException("Il campo non può essere vuoto.");
@@ -96,7 +96,7 @@ public class SetTrattaMezzo {
 
         while (!input) {
             try {
-                System.out.print("\nInserisci il tempo previsto di percorrenza (in minuti): ");
+                System.out.print("Inserisci il tempo previsto di percorrenza (in minuti): ");
                 tempoPrevisto = scanner.nextInt();
                 scanner.nextLine();
                 if (tempoPrevisto <= 0) {
