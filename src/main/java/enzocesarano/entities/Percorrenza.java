@@ -3,7 +3,6 @@ package enzocesarano.entities;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.UUID;
 
 @Entity
@@ -14,7 +13,7 @@ public class Percorrenza {
     private UUID id_percorrenza;
 
     private LocalDate data;
-    private LocalTime tempoEffettivo;
+    private int tempoEffettivo;
     @ManyToOne
     @JoinColumn(name = "id_tratta")
     private Tratta tratta;
@@ -23,7 +22,7 @@ public class Percorrenza {
     @JoinColumn(name = "id_mezzo")
     private Mezzo mezzo;
 
-    public Percorrenza(LocalDate data, LocalTime tempoEffettivo, Tratta tratta) {
+    public Percorrenza(LocalDate data, int tempoEffettivo, Tratta tratta) {
         this.data = data;
         this.tempoEffettivo = tempoEffettivo;
         this.tratta = tratta;
@@ -46,11 +45,11 @@ public class Percorrenza {
         this.data = data;
     }
 
-    public LocalTime getTempoEffettivo() {
+    public int getTempoEffettivo() {
         return tempoEffettivo;
     }
 
-    public void setTempoEffettivo(LocalTime tempoEffettivo) {
+    public void setTempoEffettivo(int tempoEffettivo) {
         this.tempoEffettivo = tempoEffettivo;
     }
 

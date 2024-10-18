@@ -21,7 +21,6 @@ public class SetMezzo {
             System.out.println("1. TRAM");
             System.out.println("2. BUS");
             try {
-
                 int nuovaScelta = scanner.nextInt();
                 scanner.nextLine();
 
@@ -34,10 +33,12 @@ public class SetMezzo {
                         break;
                     default:
                         System.out.println("Scelta non valida. Seleziona un numero tra 1 e 2.");
+                        continue;
                 }
                 inputValido = true;
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
+                scanner.nextLine();
             }
         }
 
@@ -45,16 +46,19 @@ public class SetMezzo {
         Tratta tratta = null;
         List<Tratta> tratte = dd.getAllEntities(Tratta.class);
 
-        System.out.println("Seleziona una tratta:");
-        tratte.forEach(p -> System.out.println((tratte.indexOf(p) + 1) + ". " + p.getZonaPartenza() + " - " + p.getId_tratta()));
+        System.out.println("Seleziona una tratta (oppure digita '0' per Nessuna):");
+        System.out.println("0. Nessuna");
+        tratte.forEach(p -> System.out.println((tratte.indexOf(p) + 1) + ". " + p.getZonaPartenza() + " - " + p.getCapolinea()));
 
         int scelta = -1;
         while (!puntoValido) {
-            System.out.print("Inserisci il numero del punto di emissione: ");
             try {
                 scelta = scanner.nextInt();
                 scanner.nextLine();
-                if (scelta >= 1 && scelta <= tratte.size()) {
+                if (scelta == 0) {
+                    tratta = null;
+                    puntoValido = true;
+                } else if (scelta >= 1 && scelta <= tratte.size()) {
                     tratta = tratte.get(scelta - 1);
                     puntoValido = true;
                 } else {
@@ -69,9 +73,91 @@ public class SetMezzo {
         Mezzo nuovoMezzo = new Mezzo(tipo_mezzo, statoMezzo, tratta);
         dd.save(nuovoMezzo);
 
-        tratta.setMezzo(nuovoMezzo);
+        if (tratta != null) {
+            tratta.setMezzo(nuovoMezzo);
+            dd.update(tratta);
+        }
+
+        String trattaInfo = (nuovoMezzo.getTratta() != null)
+                ? nuovoMezzo.getTratta().getZonaPartenza() + " - " + nuovoMezzo.getTratta().getCapolinea()
+                : "Nessuna tratta associata";
+        System.out.println("Nuovo mezzo creato con successo! " + nuovoMezzo.getTipo_mezzo() + " " + nuovoMezzo.getId_mezzo() + ", Tratta: " + trattaInfo);
+    }
+
+    public static void assegnaTratta(Scanner scanner, DefaultDAO dd) {
+        Mezzo mezzo = null;
+        List<Mezzo> mezziDisponibili = dd.getAllEntities(Mezzo.class);
+
+        List<Mezzo> mezziSenzaTratta = mezziDisponibili.stream()
+                .filter(m -> m.getTratta() == null)
+                .toList();
+
+        if (mezziSenzaTratta.isEmpty()) {
+            System.out.println("Non ci sono mezzi senza Tratta.");
+            return;
+        }
+
+        System.out.println("Seleziona un mezzo senza Tratta:");
+        mezziSenzaTratta.forEach(m -> System.out.println((mezziSenzaTratta.indexOf(m) + 1) + ". " + m.getTipo_mezzo()));
+
+        int sceltaMezzo = -1;
+        boolean mezzoValido = false;
+        while (!mezzoValido) {
+            System.out.print("Inserisci il numero del mezzo: ");
+            try {
+                sceltaMezzo = scanner.nextInt();
+                scanner.nextLine();
+                if (sceltaMezzo >= 1 && sceltaMezzo <= mezziSenzaTratta.size()) {
+                    mezzo = mezziSenzaTratta.get(sceltaMezzo - 1);
+                    mezzoValido = true;
+                } else {
+                    System.out.println("Scelta non valida. Riprova.");
+                }
+            } catch (Exception e) {
+                System.out.println("Errore: inserisci un numero valido.");
+                scanner.nextLine();
+            }
+        }
+
+        Tratta tratta = null;
+        List<Tratta> tratte = dd.getAllEntities(Tratta.class);
+        List<Tratta> tratteNonAssegnate = tratte.stream()
+                .filter(m -> m.getMezzo() == null).toList();
+
+        if (tratteNonAssegnate.isEmpty()) {
+            System.out.println("Non ci sono tratte non assegnate.");
+            return;
+        }
+
+        System.out.println("Seleziona la tratta da assegnare al mezzo selezionato: ");
+        tratteNonAssegnate.forEach(m -> System.out.println((tratteNonAssegnate.indexOf(m) + 1) + ". " + m.getId_tratta()));
+
+        int sceltaTratta = -1;
+        boolean trattaValida = false;
+        while (!trattaValida) {
+            System.out.print("Inserisci il numero della tratta: ");
+            try {
+                sceltaTratta = scanner.nextInt();
+                scanner.nextLine();
+                if (sceltaTratta >= 1 && sceltaTratta <= mezziSenzaTratta.size()) {
+                    tratta = tratteNonAssegnate.get(sceltaTratta - 1);
+                    trattaValida = true;
+                } else {
+                    System.out.println("Scelta non valida. Riprova.");
+                }
+            } catch (Exception e) {
+                System.out.println("Errore: inserisci un numero valido.");
+                scanner.nextLine();
+            }
+        }
+
+        mezzo.setTratta(tratta);
+        dd.update(mezzo);
+
+        tratta.setMezzo(mezzo);
         dd.update(tratta);
-        
-        System.out.println("Nuovo mezzo creato con successo! " + nuovoMezzo.getTipo_mezzo() + " " + nuovoMezzo.getId_mezzo() + ", Tratta: " + nuovoMezzo.getTratta().getZonaPartenza() + " - " + nuovoMezzo.getTratta().getCapolinea());
+
+        System.out.println("Hai assegnato la tratta con successo! " + mezzo.getTipo_mezzo() + " " + mezzo.getId_mezzo() + ", Tratta: " + tratta.getZonaPartenza() + " - " + tratta.getCapolinea());
+
     }
 }

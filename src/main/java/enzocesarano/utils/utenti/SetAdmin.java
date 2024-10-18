@@ -21,6 +21,7 @@ public class SetAdmin {
         EntityManager em = dd.getEntityManager();
         BigliettoDAO bd = new BigliettoDAO(em);
         AbbonamentiDAO ad = new AbbonamentiDAO(em);
+        PercorrenzaDAO pd = new PercorrenzaDAO(em);
 
         Utenti utente1 = null;
         boolean idValido = false;
@@ -47,6 +48,9 @@ public class SetAdmin {
             System.out.println("3. Menu Biglietti");
             System.out.println("4. Visualizza Abbonamenti");
             System.out.println("5. Visualizza Tratta Mezzo");
+            System.out.println("6. Menu Percorrenza");
+            System.out.println("7. Crea Tratta");
+            System.out.println("8. Assegna Tratta");
             System.out.println("9. Visualizza Profilo Admin");
             System.out.println("0. Esci");
             int subScelta = scanner.nextInt();
@@ -213,6 +217,15 @@ public class SetAdmin {
 
                 case 5:
                     SetTrattaMezzo.InserisciTrattaMezzo(scanner, dd, tmd);
+                    break;
+                case 6:
+                    SetMenuPercorrenza.MenuPercorrenza(scanner, dd, pd);
+                    break;
+                case 7:
+                    SetTrattaMezzo.CreaTratta(scanner, dd);
+                    break;
+                case 8:
+                    SetMezzo.assegnaTratta(scanner, dd);
                     break;
                 case 9:
                     em.refresh(utente1);
