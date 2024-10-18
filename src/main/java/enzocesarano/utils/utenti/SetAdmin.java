@@ -31,7 +31,7 @@ public class SetAdmin {
             utente1 = dd.getEntityById(Utenti.class, idUtente);
             try {
                 if (utente1 != null && utente1.getTipoUtente() == TipoUtente.ADMIN) {
-                    System.out.println("Benvenuto " + utente1.getNome() + " " + utente1.getCognome());
+                    System.out.println("\nCiao " + utente1.getNome() + " " + utente1.getCognome() + " :)\n");
                     idValido = true;
                 } else {
                     System.out.println("Utente non trovato. Riprova.");

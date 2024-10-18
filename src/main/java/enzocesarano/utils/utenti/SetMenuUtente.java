@@ -23,7 +23,7 @@ public class SetMenuUtente {
             utente1 = dd.getEntityById(Utenti.class, idUtente);
             try {
                 if (utente1 != null && utente1.getTipoUtente() == TipoUtente.NORMALE) {
-                    System.out.println("Ciao " + utente1.getNome() + " " + utente1.getCognome() + ":)\n");
+                    System.out.println("\nCiao " + utente1.getNome() + " " + utente1.getCognome() + " :)\n");
                     idValido = true;
                 } else {
                     System.out.println("Utente non trovato. Riprova.");

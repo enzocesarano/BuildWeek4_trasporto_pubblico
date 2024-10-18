@@ -88,7 +88,7 @@ public class SetUtente {
 
         Utenti nuovoUtente = new Utenti(nome, cognome, data_di_nascita, tipoUtente);
         dd.save(nuovoUtente);
-        System.out.println("Nuovo utente creato con successo! " + nuovoUtente.getNome() + " " + nuovoUtente.getCognome());
+        System.out.println("Nuovo utente creato con successo! " + nuovoUtente.getNome() + " " + nuovoUtente.getCognome() + " - " + nuovoUtente.getId_utente());
     }
 
 
@@ -119,7 +119,7 @@ public class SetUtente {
                     System.out.println("\nNessun abbonamento attivo o registrato.\n");
                 }
             } else {
-                System.out.println("L'utente non ha una tessera associata.");
+                System.out.println("\nL'utente non ha una tessera associata.\n");
             }
         }
     }
