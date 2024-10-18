@@ -52,7 +52,7 @@ public class SetBiglietto {
 
         Biglietto biglietto1 = new Biglietto(dataEmissione, false, puntoDiEmissione, null);
         get.save(biglietto1);
-        System.out.println("Il biglietto " + biglietto1.getId_biglietto() + " acquistato con successo!\n");
+        System.out.println("\nIl biglietto " + biglietto1.getId_biglietto() + " acquistato con successo!\n");
     }
 
     public static void ValidareBiglietto(Scanner scanner, DefaultDAO get) {
@@ -60,7 +60,7 @@ public class SetBiglietto {
         boolean bigliettoValido = false;
 
         while (!bigliettoValido) {
-            System.out.println("Inserisci l'ID del biglietto da validare: ");
+            System.out.println("\nInserisci l'ID del biglietto da validare: ");
             try {
                 String idBiglietto = scanner.nextLine();
                 biglietto = get.getEntityById(Biglietto.class, idBiglietto);
@@ -90,8 +90,8 @@ public class SetBiglietto {
             return;
         }
 
-        System.out.println("Seleziona un mezzo in servizio:");
-        mezziInServizio.forEach(m -> System.out.println((mezziInServizio.indexOf(m) + 1) + ". " + m.getTipo_mezzo() + " - Tratta: " + m.getTratta().getZonaPartenza() + " - " + m.getTratta().getCapolinea()));
+        System.out.println("\nSeleziona un mezzo in servizio:");
+        mezziInServizio.forEach(m -> System.out.println((mezziInServizio.indexOf(m) + 1) + ". " + m.getTipo_mezzo() + "  (Tratta: " + m.getTratta().getZonaPartenza() + " - " + m.getTratta().getCapolinea() + ")"));
 
         int sceltaMezzo = -1;
         boolean mezzoValido = false;
@@ -116,6 +116,6 @@ public class SetBiglietto {
 
         ValidazioneBiglietto validazioneBiglietto = new ValidazioneBiglietto(biglietto, mezzo, dataValidazione);
         get.save(validazioneBiglietto);
-        System.out.println("Il biglietto " + biglietto.getId_biglietto() + " è stato validato con successo!\n");
+        System.out.println("\nIl biglietto " + biglietto.getId_biglietto() + " è stato validato con successo!\n");
     }
 }

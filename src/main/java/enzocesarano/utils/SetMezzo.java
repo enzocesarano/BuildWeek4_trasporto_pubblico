@@ -5,7 +5,6 @@ import enzocesarano.entities.ENUM.StatoMezzo;
 import enzocesarano.entities.ENUM.TipoMezzo;
 import enzocesarano.entities.Mezzo;
 import enzocesarano.entities.Tratta;
-import jakarta.persistence.EntityManager;
 
 import java.util.List;
 import java.util.Scanner;
@@ -93,7 +92,6 @@ public class SetMezzo {
     }
 
     public static void assegnaTratta(Scanner scanner, DefaultDAO dd) {
-        EntityManager em = dd.getEntityManager();
         Mezzo mezzo = null;
         List<Mezzo> mezziDisponibili = dd.getAllEntities(Mezzo.class);
 

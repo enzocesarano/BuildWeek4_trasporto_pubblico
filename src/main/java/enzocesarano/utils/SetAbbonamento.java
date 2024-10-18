@@ -93,7 +93,7 @@ public class SetAbbonamento {
             boolean periodicitàValida = false;
 
             while (!periodicitàValida) {
-                System.out.println("Vuoi cambiare la periodicità dell'abbonamento?");
+                System.out.println("\nVuoi cambiare la periodicità dell'abbonamento?");
                 System.out.println("1. Mantieni " + periodicità);
                 System.out.println("2. Cambia periodicità");
 
@@ -105,7 +105,7 @@ public class SetAbbonamento {
                         periodicitàValida = true;
                         break;
                     case 2:
-                        System.out.println("Seleziona la nuova periodicità dell'abbonamento:");
+                        System.out.println("\nSeleziona la nuova periodicità dell'abbonamento:");
                         System.out.println("1. Settimanale");
                         System.out.println("2. Mensile");
 
@@ -143,7 +143,7 @@ public class SetAbbonamento {
             abbonamento.setStato(abbonamento.getData_fine().isAfter(LocalDate.now()) || abbonamento.getData_fine().isEqual(LocalDate.now()));
             get.update(abbonamento);
 
-            System.out.println("L'abbonamento è stato rinnovato con successo! La nuova data di scadenza è: " + abbonamento.getData_fine());
+            System.out.println("\nL'abbonamento è stato rinnovato con successo! La nuova data di scadenza è: " + abbonamento.getData_fine() + "\n");
         }
     }
 
@@ -157,7 +157,7 @@ public class SetAbbonamento {
 
         int scelta = -1;
         while (!puntoValido) {
-            System.out.print("Inserisci il numero del punto di emissione: ");
+            System.out.print("\nInserisci il numero del punto di emissione: ");
             try {
                 scelta = scanner.nextInt();
                 scanner.nextLine();
@@ -179,11 +179,11 @@ public class SetAbbonamento {
 
         while (!dateValide) {
             try {
-                System.out.print("Inserisci la data di inizio (formato yyyy-mm-dd): ");
+                System.out.print("\nInserisci la data di inizio (formato yyyy-mm-dd): ");
                 String dataInizioStr = scanner.nextLine();
                 dataInizio = LocalDate.parse(dataInizioStr);
 
-                System.out.print("Inserisci la data di fine (formato yyyy-mm-dd): ");
+                System.out.print("\nInserisci la data di fine (formato yyyy-mm-dd): ");
                 String dataFineStr = scanner.nextLine();
                 dataFine = LocalDate.parse(dataFineStr);
 
@@ -201,11 +201,11 @@ public class SetAbbonamento {
             List<Abbonamento> abbonamenti = ad.abbonamentoPerPuntoDiEmissione(puntoDiEmissione, dataInizio, dataFine);
 
             if (abbonamenti.isEmpty()) {
-                System.out.println("Non ci sono abbonamenti venduti per il punto di emissione tra " + dataInizio + " e " + dataFine + "\n");
+                System.out.println("\nNon ci sono abbonamenti venduti per il punto di emissione tra " + dataInizio + " e " + dataFine + "\n");
             } else {
-                System.out.println("Abbonamenti dal " + dataInizio + " al " + dataFine + " presso " + puntoDiEmissione.getNome_punto() + ":");
+                System.out.println("\nAbbonamenti dal " + dataInizio + " al " + dataFine + " presso " + puntoDiEmissione.getNome_punto() + ":\n");
                 abbonamenti.forEach(b -> {
-                    System.out.println("- Abbonamento ID: " + b.getId_abbonamento() + ", Data emissione: " + b.getData_inizio() + " - " + b.getPeriodicità());
+                    System.out.println("\n- Abbonamento ID: " + b.getId_abbonamento() + ", Data emissione: " + b.getData_inizio() + " - " + b.getPeriodicità() + "\n");
                 });
             }
         } catch (BigliettoNotFoundException e) {

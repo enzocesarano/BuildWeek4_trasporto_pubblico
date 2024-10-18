@@ -18,12 +18,12 @@ public class SetMenuUtente {
         Utenti utente1 = null;
         boolean idValido = false;
         while (!idValido) {
-            System.out.println("Inserisci il tuo id: ");
+            System.out.println("\nInserisci il tuo id: ");
             String idUtente = scanner.nextLine();
             utente1 = dd.getEntityById(Utenti.class, idUtente);
             try {
                 if (utente1 != null && utente1.getTipoUtente() == TipoUtente.NORMALE) {
-                    System.out.println("Benvenuto " + utente1.getNome() + " " + utente1.getCognome());
+                    System.out.println("Ciao " + utente1.getNome() + " " + utente1.getCognome() + ":)\n");
                     idValido = true;
                 } else {
                     System.out.println("Utente non trovato. Riprova.");
@@ -56,11 +56,11 @@ public class SetMenuUtente {
                     if (utente1.getTessera() == null) {
                         SetTessera.AcquistaTessera(scanner, dd, utente1);
                     } else if (utente1.getTessera() != null && utente1.getTessera().isStato()) {
-                        System.out.println("Hai già una tessera attiva.");
+                        System.out.println("\nHai già una tessera attiva.\n");
                     } else if (!utente1.getTessera().isStato()) {
                         boolean inputValido = false;
                         while (!inputValido) {
-                            System.out.println("La tua tessera è scaduta. Vuoi rinnovarla? (S/N)");
+                            System.out.println("\nLa tua tessera è scaduta. Vuoi rinnovarla? (S/N)");
                             String risposta = scanner.nextLine().trim().toUpperCase();
 
                             switch (risposta) {
@@ -70,12 +70,12 @@ public class SetMenuUtente {
                                     break;
 
                                 case "N":
-                                    System.out.println("Hai scelto di non rinnovare la tessera.");
+                                    System.out.println("\nHai scelto di non rinnovare la tessera.");
                                     inputValido = true;
                                     break;
 
                                 default:
-                                    System.out.println("Scelta non valida. Inserisci 'S' per Sì o 'N' per No.");
+                                    System.out.println("\nScelta non valida. Inserisci 'S' per Sì o 'N' per No.\n");
                                     break;
                             }
                         }
@@ -86,15 +86,15 @@ public class SetMenuUtente {
                     if (utente1.getTessera() != null && utente1.getTessera().getAbbonamenti() == null) {
                         SetAbbonamento.AcquistaAbbonamento(scanner, dd, utente1);
                     } else if (utente1.getTessera() == null) {
-                        System.out.println("Non hai una tessera. Acquista una tessera prima di fare l'abbonamento.");
+                        System.out.println("\nNon hai una tessera. Acquista una tessera prima di fare l'abbonamento.\n");
                     } else if (utente1.getTessera().getAbbonamenti().isStato()) {
-                        System.out.println("Hai già un abbonamento attivo.");
+                        System.out.println("\nHai già un abbonamento attivo.\n");
                     } else if (!utente1.getTessera().getAbbonamenti().isStato()) {
 
                         boolean inputValido = false;
 
                         while (!inputValido) {
-                            System.out.println("Il tuo abbonamento è scaduto. Vuoi rinnovarlo? (S/N)");
+                            System.out.println("\nIl tuo abbonamento è scaduto. Vuoi rinnovarlo? (S/N)");
                             String risposta = scanner.nextLine().trim().toUpperCase();
 
                             switch (risposta) {
@@ -104,12 +104,12 @@ public class SetMenuUtente {
                                     break;
 
                                 case "N":
-                                    System.out.println("Hai scelto di non rinnovare l'abbonamento.");
+                                    System.out.println("\nHai scelto di non rinnovare l'abbonamento.\n");
                                     inputValido = true;
                                     break;
 
                                 default:
-                                    System.out.println("Scelta non valida. Inserisci 'S' per Sì o 'N' per No.");
+                                    System.out.println("\nScelta non valida. Inserisci 'S' per Sì o 'N' per No.\n");
                                     break;
                             }
                         }

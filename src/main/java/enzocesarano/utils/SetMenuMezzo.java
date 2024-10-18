@@ -13,8 +13,9 @@ public class SetMenuMezzo {
             System.out.println("\nSeleziona un utente oppure registrati:");
             System.out.println("1. Crea Mezzo");
             System.out.println("2. Crea Tratta");
-            System.out.println("3. Assegna Tratta");
-            System.out.println("4. Visualizza Tratta");
+            System.out.println("3. Cancella Tratta");
+            System.out.println("4. Assegna Tratta");
+            System.out.println("5. Visualizza Tratta");
             System.out.println("0. Esci");
 
             int scelta = scanner.nextInt();
@@ -28,9 +29,12 @@ public class SetMenuMezzo {
                     SetTrattaMezzo.CreaTratta(scanner, dd);
                     break;
                 case 3:
-                    SetMezzo.assegnaTratta(scanner, dd);
+                    SetTrattaMezzo.CancellaTratta(scanner, dd);
                     break;
                 case 4:
+                    SetMezzo.assegnaTratta(scanner, dd);
+                    break;
+                case 5:
                     SetTrattaMezzo.InserisciTrattaMezzo(scanner, dd, tmd);
                     break;
                 case 0:

@@ -23,16 +23,16 @@ public class SetTessera {
                 .toList();
 
         if (puntiAttivi.isEmpty()) {
-            System.out.println("Non ci sono punti di emissione attivi disponibili.");
+            System.out.println("\nNon ci sono punti di emissione attivi disponibili.\n");
             return;
         }
 
-        System.out.println("Seleziona un punto di emissione:");
+        System.out.println("\nSeleziona un punto di emissione:");
         puntiAttivi.forEach(p -> System.out.println((puntiAttivi.indexOf(p) + 1) + ". " + p.getNome_punto()));
 
         int scelta = -1;
         while (!puntoValido) {
-            System.out.print("Inserisci il numero del punto di emissione: ");
+            System.out.print("\nInserisci il numero del punto di emissione: ");
             try {
                 scelta = scanner.nextInt();
                 scanner.nextLine();
@@ -50,7 +50,7 @@ public class SetTessera {
 
         Tessera nuovaTessera = new Tessera(dataEmissione, utente1, null);
         get.save(nuovaTessera);
-        System.out.println("Tessera " + nuovaTessera.getId_tessera() + " acquistata con successo!");
+        System.out.println("\nTessera " + nuovaTessera.getId_tessera() + " acquistata con successo!\n");
     }
 
     public static void RinnovaTessera(Scanner scanner, DefaultDAO get, Utenti utente1) {
