@@ -41,7 +41,6 @@ public class Application {
                     SetMenuUtente.gestisciUtente(scanner, dd, tmd);
                     break;
                 case 2:
-                    // Admin
                     SetAdmin.MenuAdmin(scanner, dd, md, true, tmd);
                     break;
 
