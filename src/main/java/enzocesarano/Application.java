@@ -3,15 +3,15 @@ package enzocesarano;
 import enzocesarano.dao.DefaultDAO;
 import enzocesarano.dao.ManutenzioneDAO;
 import enzocesarano.dao.TrattaMezziDAO;
-import enzocesarano.entities.ENUM.TipoUtente;
-import enzocesarano.entities.Utenti;
-import enzocesarano.utils.SetManutenzione;
+import enzocesarano.utils.utenti.SetAdmin;
 import enzocesarano.utils.utenti.SetMenuUtente;
+import enzocesarano.utils.utenti.SetUtente;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
 import java.util.Scanner;
+
 
 public class Application {
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("trasporto_pubblico");
@@ -21,6 +21,7 @@ public class Application {
         DefaultDAO dd = new DefaultDAO(em);
         ManutenzioneDAO md = new ManutenzioneDAO(em);
         TrattaMezziDAO tmd = new TrattaMezziDAO(em);
+
 
         Scanner scanner = new Scanner(System.in);
         boolean exit = false;
@@ -41,26 +42,11 @@ public class Application {
                     break;
                 case 2:
                     // Admin
-                    System.out.println("Accesso Admin");
-                    System.out.println("Inserisci il tuo ID admin:");
-                    String adminUtenteId = scanner.nextLine();
-
-                    try {
-                        Utenti adminUtente = dd.getEntityById(Utenti.class, adminUtenteId);
-
-
-                        if (adminUtente != null && adminUtente.getTipoUtente() == TipoUtente.ADMIN) {
-                            SetManutenzione.tracciaManutenzione(scanner, dd, md, true);
-                        } else {
-                            System.out.println("Accesso negato! Solo per utenti autorizzati.");
-                        }
-                    } catch (Exception e) {
-                        System.out.println("Errore! Utente non trovato.");
-                    }
+                    SetAdmin.MenuAdmin(scanner, dd, md, true, tmd);
                     break;
 
                 case 3:
-                    System.out.println("sono il caso 3");
+                    SetUtente.creaUtente(scanner, dd);
                     break;
 
                 case 0:

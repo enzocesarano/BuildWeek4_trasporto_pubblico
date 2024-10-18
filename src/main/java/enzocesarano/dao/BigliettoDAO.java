@@ -1,6 +1,7 @@
 package enzocesarano.dao;
 
 import enzocesarano.entities.Biglietto;
+import enzocesarano.entities.Mezzo;
 import enzocesarano.entities.PuntoDiEmissione;
 import exceptions.BigliettoNotFoundException;
 import jakarta.persistence.EntityManager;
@@ -76,8 +77,20 @@ public class BigliettoDAO extends DefaultDAO {
             throw new BigliettoNotFoundException("Il totale dei biglietti per il " + puntoDiEmissione.getNome_punto() + " è zero.");
         }
         return totaleBigliettiPEm;
+    }
 
+    public List<Biglietto> bigliettiValidatiPerMezzo(Mezzo mezzo) {
+        TypedQuery<Biglietto> query = getEntityManager().createQuery(
+                "SELECT b FROM Biglietto b JOIN ValidazioneBiglietto v ON b.id_biglietto = v.biglietto.id_biglietto WHERE v.mezzo = :mezzo", Biglietto.class);
+        query.setParameter("mezzo", mezzo);
 
+        List<Biglietto> biglietti = query.getResultList();
+
+        if (biglietti.isEmpty()) {
+            throw new BigliettoNotFoundException("Non ci sono biglietti validati per il mezzo selezionato!");
+        }
+
+        return biglietti;
     }
 }
 

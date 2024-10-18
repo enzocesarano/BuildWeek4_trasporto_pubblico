@@ -2,7 +2,6 @@ package enzocesarano.dao;
 
 import enzocesarano.entities.ENUM.StatoMezzo;
 import enzocesarano.entities.Mezzo;
-import enzocesarano.entities.Percorrenza;
 import enzocesarano.entities.Tratta;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
@@ -29,7 +28,7 @@ public class TrattaMezziDAO {
             return Collections.emptyList();
         }
         TypedQuery<Tratta> query = entityManager.createQuery(" " +
-                "SELECT p.tratta FROM Percorrenza p WHERE" +
+                "SELECT p FROM Tratta p WHERE" +
                 " p.mezzo.id_mezzo = :idMezzo", Tratta.class);
         query.setParameter("idMezzo", idMezzo);
         return query.getResultList();
@@ -46,33 +45,6 @@ public class TrattaMezziDAO {
         return query.getSingleResult().intValue();
     }
 
-    public List<Percorrenza> trovaPercorrenze(UUID idMezzo, UUID idTratta) {
-        TypedQuery<Percorrenza> query = entityManager.createQuery(
-                "SELECT p FROM Percorrenza p WHERE " +
-                        "p.mezzo.id = :idMezzo AND" +
-                        " p.tratta.id = :idTratta",
-                Percorrenza.class
-        );
-        query.setParameter("idMezzo", idMezzo);
-        query.setParameter("idTratta", idTratta);
-        return query.getResultList();
-    }
-
-
-    public double calcolaMediaPercorrenze(String trattaId) {
-        UUID id = UUID.fromString(trattaId);
-        TypedQuery<Long> query = entityManager.createQuery(
-                "SELECT SUM(EXTRACT(EPOCH FROM v.tempoEffettivo)) / 60 FROM Percorrenza v WHERE v.tratta.id_tratta = :id", Long.class);
-        query.setParameter("id", id);
-        Long totaleMinuti = query.getSingleResult();
-
-        TypedQuery<Long> countQuery = entityManager.createQuery(
-                "SELECT COUNT(v) FROM Percorrenza v WHERE v.tratta.id_tratta = :id", Long.class);
-        countQuery.setParameter("id", id);
-        Long conteggioPercorrenze = countQuery.getSingleResult();
-
-        return (double) (totaleMinuti / conteggioPercorrenze) / 60;
-    }
 }
 
 

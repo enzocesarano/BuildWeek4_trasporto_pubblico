@@ -2,10 +2,12 @@ package enzocesarano.dao;
 
 import enzocesarano.entities.Abbonamento;
 import enzocesarano.entities.PuntoDiEmissione;
+import exceptions.BigliettoNotFoundException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 public class AbbonamentiDAO {
@@ -34,5 +36,18 @@ public class AbbonamentiDAO {
         return query.getSingleResult();
     }
 
+    public List<Abbonamento> abbonamentoPerPuntoDiEmissione(PuntoDiEmissione puntoDiEmissione, LocalDate inizio, LocalDate fine) {
+        TypedQuery<Abbonamento> query = entityManager.createQuery(
+                "SELECT b FROM Abbonamento b WHERE b.puntoDiEmissione = :puntoDiEmissione AND b.data_inizio BETWEEN :inizio AND :fine", Abbonamento.class);
+        query.setParameter("puntoDiEmissione", puntoDiEmissione);
+        query.setParameter("inizio", inizio);
+        query.setParameter("fine", fine);
+
+        List<Abbonamento> abbonamenti = query.getResultList();
+        if (abbonamenti.isEmpty()) {
+            throw new BigliettoNotFoundException("Non ci sono abbonamenti per questo periodo e punto di emissione!");
+        }
+        return abbonamenti;
+    }
 
 }

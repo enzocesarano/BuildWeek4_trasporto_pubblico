@@ -1,13 +1,16 @@
 package enzocesarano.utils;
 
+import enzocesarano.dao.AbbonamentiDAO;
 import enzocesarano.dao.DefaultDAO;
 import enzocesarano.entities.Abbonamento;
 import enzocesarano.entities.ENUM.Periodicità;
 import enzocesarano.entities.PuntoDiEmissione;
 import enzocesarano.entities.Tessera;
 import enzocesarano.entities.Utenti;
+import exceptions.BigliettoNotFoundException;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -134,13 +137,81 @@ public class SetAbbonamento {
             } else if (periodicità == Periodicità.MENSILE) {
                 abbonamento.setData_fine(nuovaDataInizio.plusMonths(1));
             }
-            
+
             abbonamento.setPeriodicità(periodicità);
 
             abbonamento.setStato(abbonamento.getData_fine().isAfter(LocalDate.now()) || abbonamento.getData_fine().isEqual(LocalDate.now()));
             get.update(abbonamento);
 
-            System.out.println("L'abbonamento è stato rinnovato con successo!");
+            System.out.println("L'abbonamento è stato rinnovato con successo! La nuova data di scadenza è: " + abbonamento.getData_fine());
+        }
+    }
+
+    public static void AbbonamentiPerPunto(DefaultDAO get, Scanner scanner, AbbonamentiDAO ad) {
+        boolean puntoValido = false;
+        PuntoDiEmissione puntoDiEmissione = null;
+        List<PuntoDiEmissione> puntiDiEmissione = get.getAllEntities(PuntoDiEmissione.class);
+
+        System.out.println("Seleziona un punto di emissione:");
+        puntiDiEmissione.forEach(p -> System.out.println((puntiDiEmissione.indexOf(p) + 1) + ". " + p.getNome_punto() + " - " + p.getId_punto_emissione()));
+
+        int scelta = -1;
+        while (!puntoValido) {
+            System.out.print("Inserisci il numero del punto di emissione: ");
+            try {
+                scelta = scanner.nextInt();
+                scanner.nextLine();
+                if (scelta >= 1 && scelta <= puntiDiEmissione.size()) {
+                    puntoDiEmissione = puntiDiEmissione.get(scelta - 1);
+                    puntoValido = true;
+                } else {
+                    System.out.println("Scelta non valida. Riprova.");
+                }
+            } catch (Exception e) {
+                System.out.println("Errore: inserisci un numero valido.");
+                scanner.nextLine();
+            }
+        }
+
+        LocalDate dataInizio = null;
+        LocalDate dataFine = null;
+        boolean dateValide = false;
+
+        while (!dateValide) {
+            try {
+                System.out.print("Inserisci la data di inizio (formato yyyy-mm-dd): ");
+                String dataInizioStr = scanner.nextLine();
+                dataInizio = LocalDate.parse(dataInizioStr);
+
+                System.out.print("Inserisci la data di fine (formato yyyy-mm-dd): ");
+                String dataFineStr = scanner.nextLine();
+                dataFine = LocalDate.parse(dataFineStr);
+
+                if (dataInizio.isAfter(dataFine)) {
+                    System.out.println("Errore: la data di inizio non può essere successiva alla data di fine. Riprova.");
+                } else {
+                    dateValide = true;
+                }
+            } catch (DateTimeParseException e) {
+                System.out.println("Formato data non valido. Riprova.");
+            }
+        }
+
+        try {
+            List<Abbonamento> abbonamenti = ad.abbonamentoPerPuntoDiEmissione(puntoDiEmissione, dataInizio, dataFine);
+
+            if (abbonamenti.isEmpty()) {
+                System.out.println("Non ci sono abbonamenti venduti per il punto di emissione tra " + dataInizio + " e " + dataFine + "\n");
+            } else {
+                System.out.println("Abbonamenti dal " + dataInizio + " al " + dataFine + " presso " + puntoDiEmissione.getNome_punto() + ":");
+                abbonamenti.forEach(b -> {
+                    System.out.println("- Abbonamento ID: " + b.getId_abbonamento() + ", Data emissione: " + b.getData_inizio() + " - " + b.getPeriodicità());
+                });
+            }
+        } catch (BigliettoNotFoundException e) {
+            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Errore durante il recupero degli abbonamenti: " + e.getMessage());
         }
     }
 }
