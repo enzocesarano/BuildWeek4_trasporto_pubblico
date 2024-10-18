@@ -98,7 +98,7 @@ public class SetMezzo {
         }
 
         System.out.println("Seleziona un mezzo senza Tratta:");
-        mezziSenzaTratta.forEach(m -> System.out.println((mezziSenzaTratta.indexOf(m) + 1) + ". " + m.getTipo_mezzo()));
+        mezziSenzaTratta.forEach(m -> System.out.println((mezziSenzaTratta.indexOf(m) + 1) + ". " + m.getTipo_mezzo() + " - (" + m.getId_mezzo() + ")"));
 
         int sceltaMezzo = -1;
         boolean mezzoValido = false;
@@ -130,7 +130,7 @@ public class SetMezzo {
         }
 
         System.out.println("Seleziona la tratta da assegnare al mezzo selezionato: ");
-        tratteNonAssegnate.forEach(m -> System.out.println((tratteNonAssegnate.indexOf(m) + 1) + ". " + m.getId_tratta()));
+        tratteNonAssegnate.forEach(m -> System.out.println((tratteNonAssegnate.indexOf(m) + 1) + ". " + m.getZonaPartenza() + " - " + m.getCapolinea() + " Id: " + m.getId_tratta()));
 
         int sceltaTratta = -1;
         boolean trattaValida = false;
