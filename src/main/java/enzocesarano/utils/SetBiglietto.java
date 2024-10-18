@@ -82,7 +82,7 @@ public class SetBiglietto {
         List<Mezzo> mezziDisponibili = get.getAllEntities(Mezzo.class);
 
         List<Mezzo> mezziInServizio = mezziDisponibili.stream()
-                .filter(m -> m.getStatoMezzo() == StatoMezzo.SERVIZIO)
+                .filter(m -> m.getStatoMezzo() == StatoMezzo.SERVIZIO && m.getTratta() != null)
                 .toList();
 
         if (mezziInServizio.isEmpty()) {
